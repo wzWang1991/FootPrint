@@ -1,0 +1,21 @@
+#map_canvas { height: 600px; }
+
+#logo {
+    display: inline-block;
+    width: 30%;
+}
+
+.nav-custom {
+    margin-bottom: 0;
+}
+
+.col-right {
+    margin-top: 10px;
+    height: 600px;
+}
+
+.list {
+    margin-top: 10px;
+    height: 546px;
+    overflow-y: scroll;
+}
