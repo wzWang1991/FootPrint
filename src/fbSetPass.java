@@ -1,21 +1,22 @@
 
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class getToken
+ * Servlet implementation class fbSetPass
  */
-public class getToken extends HttpServlet {
+public class fbSetPass extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public getToken() {
+    public fbSetPass() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,16 +32,9 @@ public class getToken extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		if (password != null) {
-			// Use user name and password to check if it's in the database.
-		} else {
-			// Facebook login. Check if this email in the database.
-		}
-		
-		
+		// Save this to database and return a token.
 		
 	}
 
