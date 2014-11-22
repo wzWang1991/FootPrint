@@ -29,4 +29,14 @@
     <servlet-name>fbSetPass</servlet-name>
     <url-pattern>/fbSetPass</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>lala</display-name>
+    <servlet-name>lala</servlet-name>
+    <servlet-class>lala</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>lala</servlet-name>
+    <url-pattern>/lala</url-pattern>
+  </servlet-mapping>
 </web-app>

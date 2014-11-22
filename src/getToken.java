@@ -28,7 +28,25 @@ public class getToken extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		Gson gson = new Gson();
+		response.setContentType("application/json"); 
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		TokenContent result=new TokenContent();
+		if (password != null) {
+			RdsLoader instance = RdsLoader.getInstance();
+			instance.init();
+			UserInfo userInfo = instance.checkPassword(email, password);
+			if (userInfo!=null) {
+				result = TokenContent.getNewToken("123", userInfo.getEmail(), userInfo.getNickname(), userInfo.getFaceBook());
+			}
+		} else {
+			// Facebook login. Check if this email in the database.
+		}
+		PrintWriter out=response.getWriter();
+		String ans=gson.toJson(result);
+		out.println(ans);
+		out.flush();
 	}
 
 	/**

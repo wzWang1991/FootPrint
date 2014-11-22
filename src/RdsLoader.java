@@ -38,8 +38,6 @@ public class RdsLoader {
     
     public void setPassword(String password) {
     	this.password = password;
-    	if (conn == null)
-    		init();
     }
     
     public boolean isPasswordSet() {
@@ -47,7 +45,13 @@ public class RdsLoader {
     }
 	
     public static void main(String[] args) {
-    	RdsLoader instanceTmp = getInstance();
+    	System.out.println("adsd");
+    	RdsLoader instance = RdsLoader.getInstance();
+    	String email="carr@gmail.com";
+		String password = "henry";
+		instance.init();
+		UserInfo userInfo = instance.checkPassword(email, password);
+		System.out.println(userInfo.getEmail());
 //    	instanceTmp.deleteTable("Users");
 //    	instanceTmp.createUsersInfoTable();
 //    	instanceTmp.insert("Users");
