@@ -48,7 +48,6 @@ public class RdsLoader {
 	
     public static void main(String[] args) {
     	RdsLoader instanceTmp = getInstance();
-    	instanceTmp.setPassword("cloudcomwyhq");
 //    	instanceTmp.deleteTable("Users");
 //    	instanceTmp.createUsersInfoTable();
 //    	instanceTmp.insert("Users");
@@ -59,6 +58,7 @@ public class RdsLoader {
     
     public void init() {
         try {
+        	setPassword("cloudcomwyhq");
             Class.forName(JDBC_DRIVER);
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL, "FPDatabase", password);
@@ -103,7 +103,7 @@ public class RdsLoader {
     
     public boolean registerNewUser(String inputEmail, String inputPassword, String nickName) {
     	System.out.println("Rigerster new User "+inputEmail);
-    	User user=selectUser(inputEmail);
+    	UserInfo user=selectUser(inputEmail);
     	if (user!=null)
     		return false;
     	Statement stmt;
@@ -163,7 +163,7 @@ public class RdsLoader {
         }
     }
     
-    public User selectUser(String inputEmail) {
+    public UserInfo selectUser(String inputEmail) {
     	String sql = "SELECT * from Users where Email='"+inputEmail+"'";
     	Statement stmt;
     	try {
@@ -177,7 +177,7 @@ public class RdsLoader {
         		String nickname = rs.getString("Nickname");
         		rs.close();
             	stmt.close();
-    			return new User(userID,email,password,faceBook,nickname);
+    			return new UserInfo(userID,email,password,faceBook,nickname);
             }
     	}catch (Exception e) {
         	System.err.println("Reconnect to database.");
@@ -186,12 +186,12 @@ public class RdsLoader {
     	return null;
     }
     
-    public boolean checkPassword(String inputEmail, String intputPassword) {
-    	User user=selectUser(inputEmail);
-    	if (user!=null || intputPassword.equals(user.getPassword())) {
-    		System.out.println("hi,"+user.getNickname()+"~ you are loging in!");
-    		return true;
+    public UserInfo checkPassword(String inputEmail, String intputPassword) {
+    	UserInfo userInfo=selectUser(inputEmail);
+    	if (userInfo!=null || intputPassword.equals(userInfo.getPassword())) {
+    		System.out.println("hi,"+userInfo.getNickname()+"~ you are loging in!");
+    		return userInfo;
     	}
-    	else return false;
+    	else return null;
     }
 }

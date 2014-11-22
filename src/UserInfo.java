@@ -1,10 +1,10 @@
-public class User {
+public class UserInfo {
 	private int userID;
 	private String email;
 	private String password;
 	private boolean faceBook;
 	private String nickname;
-	public User(int userID, String email, String password, boolean faceBook, String nickname) {
+	public UserInfo(int userID, String email, String password, boolean faceBook, String nickname) {
 		this.userID=userID;
 		this.email=email;
 		this.password=password;
