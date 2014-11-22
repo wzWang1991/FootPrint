@@ -40,11 +40,14 @@ public class getToken extends HttpServlet {
 			instance.init();
 			UserInfo userInfo = instance.checkPassword(email, password);
 			if (userInfo!=null) {
-				result = TokenContent.getNewToken("123", userInfo.getEmail(), userInfo.getNickname(), userInfo.getFaceBook());
+				result = TokenContent.getNewToken(TokenGenerator.getToken(), userInfo.getEmail(), userInfo.getNickname(), userInfo.getFaceBook());
 			}
 		} else {
 			// Facebook login. Check if this email in the database.
 		}
+		TokenSaver.getInstance().map.put(result.token, "hehe");
+		System.out.println(TokenSaver.getInstance().isInMap(result.token));
+		System.out.println(TokenSaver.getInstance().map.size());
 		System.out.println(result.token);
 		PrintWriter out=response.getWriter();
 		String ans=gson.toJson(result);
