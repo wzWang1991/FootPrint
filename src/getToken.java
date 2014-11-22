@@ -32,6 +32,8 @@ public class getToken extends HttpServlet {
 		response.setContentType("application/json"); 
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+		System.out.println("fuck:" + password);
+		System.out.println("fuck:" + email);
 		TokenContent result=new TokenContent();
 		if (password != null) {
 			RdsLoader instance = RdsLoader.getInstance();
@@ -43,6 +45,7 @@ public class getToken extends HttpServlet {
 		} else {
 			// Facebook login. Check if this email in the database.
 		}
+		System.out.println(result.token);
 		PrintWriter out=response.getWriter();
 		String ans=gson.toJson(result);
 		out.println(ans);
@@ -54,6 +57,7 @@ public class getToken extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		System.out.println("fuck:fuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckfuckpost");
 		Gson gson = new Gson();
 		response.setContentType("application/json"); 
 		String email = request.getParameter("email");

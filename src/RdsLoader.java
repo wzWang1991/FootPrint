@@ -192,7 +192,7 @@ public class RdsLoader {
     
     public UserInfo checkPassword(String inputEmail, String intputPassword) {
     	UserInfo userInfo=selectUser(inputEmail);
-    	if (userInfo!=null || intputPassword.equals(userInfo.getPassword())) {
+    	if (userInfo!=null && intputPassword.equals(userInfo.getPassword())) {
     		System.out.println("hi,"+userInfo.getNickname()+"~ you are loging in!");
     		return userInfo;
     	}
