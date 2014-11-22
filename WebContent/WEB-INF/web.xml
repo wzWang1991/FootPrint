@@ -9,4 +9,14 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>getToken</display-name>
+    <servlet-name>getToken</servlet-name>
+    <servlet-class>getToken</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>getToken</servlet-name>
+    <url-pattern>/getToken</url-pattern>
+  </servlet-mapping>
 </web-app>
