@@ -53,7 +53,8 @@ public class RdsLoader {
 //    	instanceTmp.createUsersInfoTable();
 //    	instanceTmp.insert("Users");
 //    	instanceTmp.selectAll("Users");
-    	instanceTmp.selectUserAndCheckPassword("carr@gmail.com","henry");
+//    	instanceTmp.checkPassword("carr@gmail.com","henry");
+//    	System.out.println(instanceTmp.registerNewUser("qiuzhen@gmail.com", "zq2130", "qq"));
 	}
     
     public void init() {
@@ -100,6 +101,25 @@ public class RdsLoader {
         }
     }
     
+    public boolean registerNewUser(String inputEmail, String inputPassword, String nickName) {
+    	System.out.println("Rigerster new User "+inputEmail);
+    	User user=selectUser(inputEmail);
+    	if (user!=null)
+    		return false;
+    	Statement stmt;
+    	try {
+    		stmt = conn.createStatement();
+    		String sql = "INSERT INTO Users (Email, Password, FaceBook, Nickname)"+
+                    " VALUES ('"+inputEmail+"', '"+inputPassword+"', false, '"+nickName+"')";
+    		stmt.executeUpdate(sql);
+            stmt.close();
+    	}
+    	catch (SQLException e) {
+            e.printStackTrace();
+        } 
+    	return true;
+    }
+   
     private void insert(String table) {
         System.out.println("Inserting into table " +table );
         Statement stmt;
@@ -143,35 +163,35 @@ public class RdsLoader {
         }
     }
     
-    public User selectUserAndCheckPassword(String inputEmail, String intputPassword) {
+    public User selectUser(String inputEmail) {
     	String sql = "SELECT * from Users where Email='"+inputEmail+"'";
     	Statement stmt;
     	try {
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()){
-            	String password = rs.getString("Password");
-            	if (password.equals(intputPassword)) {
-            		int userID = rs.getInt("userID");
-            		String email = rs.getString("Email");
-            		Boolean faceBook = rs.getBoolean("FaceBook");
-            		String nickname = rs.getString("Nickname");
-            		System.out.println("hi,"+nickname+"~ you are loging in!");
-            		if (password.equals(intputPassword)) {
-            			rs.close();
-                    	stmt.close();
-            			return new User(userID,email,password,faceBook,nickname);
-            		}
-            	}
+            	int userID = rs.getInt("userID");
+        		String email = rs.getString("Email");
+        		String password = rs.getString("Password");
+        		Boolean faceBook = rs.getBoolean("FaceBook");
+        		String nickname = rs.getString("Nickname");
+        		rs.close();
+            	stmt.close();
+    			return new User(userID,email,password,faceBook,nickname);
             }
-            rs.close();
-            stmt.close();
-        } catch (Exception e) {
+    	}catch (Exception e) {
         	System.err.println("Reconnect to database.");
             e.printStackTrace();
         }
-    	System.out.println("your email and password does not match!");
     	return null;
     }
     
+    public boolean checkPassword(String inputEmail, String intputPassword) {
+    	User user=selectUser(inputEmail);
+    	if (user!=null || intputPassword.equals(user.getPassword())) {
+    		System.out.println("hi,"+user.getNickname()+"~ you are loging in!");
+    		return true;
+    	}
+    	else return false;
+    }
 }
