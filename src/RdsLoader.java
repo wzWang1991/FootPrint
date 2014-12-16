@@ -53,7 +53,7 @@ public class RdsLoader {
 //		instance.selectAllPhotoes();
 //		instance.insertPhotoTable(2, "2014-9-10 12:12:12", "really good", 12.12, 23.23, "https://s3.amazonaws.com/footprint.linhuang/cen.jpeg");
 //		instance.selectAllPhotoes();
-		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation("Autumn", 0, 0, 0, 0);
+		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation("winter", 0, 0, 0, 0);
 		System.out.println(res.size());
 		for (int i = 0; i <res.size(); i++) {
 			System.out.println(res.get(i).title);
@@ -61,6 +61,10 @@ public class RdsLoader {
 			System.out.println(res.get(i).content);
 			System.out.println(res.get(i).images.get(0));
 		}
+//		instance.insertPhotoTable(2, "2014-12-10 12:10:10", "it is too cold, but I love it!!! Fantastic!!", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter.jpg");
+//		instance.insertPhotoTable(1, "2014-11-10 23:08:31", "Bright Buildings !!!!!!!!!!! I will never leave NYC!!!!", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter1.jpg");
+//		instance.insertPhotoTable(2, "2014-11-13 04:02:21", "Hey, Hey, my girlfriend is pretty, right?~~", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter2.jpg");
+//		instance.insertPhotoTable(1, "2014-12-20 08:05:48", "A long way...", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter3.jpg");
     }
     
     public void init() {
@@ -288,6 +292,9 @@ public class RdsLoader {
     		timeBegin = "2014-11-01 00:00:00";
     		timeEnd = "2015-01-31 23:59:59";
     		break;
+    	case "all":
+    		timeBegin = "2000-01-01 00:00:00";
+    		timeEnd = "2020-01-01 00:00:00";
     	}
     	Statement stmt;
     	try {
