@@ -49,4 +49,14 @@
     <servlet-name>PhotoGetter</servlet-name>
     <url-pattern>/PhotoGetter</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SinglePhotoGetter</display-name>
+    <servlet-name>SinglePhotoGetter</servlet-name>
+    <servlet-class>SinglePhotoGetter</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SinglePhotoGetter</servlet-name>
+    <url-pattern>/SinglePhotoGetter</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -48,23 +48,49 @@ public class RdsLoader {
     public static void main(String[] args) {
     	RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
+//		instance.deleteTable("Comments");
 //		instance.deleteTable("Photoes");
 //		instance.createPhotoTable();
 //		instance.selectAllPhotoes();
 //		instance.insertPhotoTable(2, "2014-9-10 12:12:12", "really good", 12.12, 23.23, "https://s3.amazonaws.com/footprint.linhuang/cen.jpeg");
 //		instance.selectAllPhotoes();
-		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation("winter", 0, 0, 0, 0);
-		System.out.println(res.size());
-		for (int i = 0; i <res.size(); i++) {
-			System.out.println(res.get(i).title);
-			System.out.println(res.get(i).date);
-			System.out.println(res.get(i).content);
-			System.out.println(res.get(i).images.get(0));
-		}
+//		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation("winter", 0, 0, 0, 0);
+//		System.out.println(res.size());
+//		for (int i = 0; i <res.size(); i++) {
+//			System.out.println(res.get(i).title);
+//			System.out.println(res.get(i).date);
+//			System.out.println(res.get(i).content);
+//			System.out.println(res.get(i).images.get(0));
+//		}
 //		instance.insertPhotoTable(2, "2014-12-10 12:10:10", "it is too cold, but I love it!!! Fantastic!!", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter.jpg");
 //		instance.insertPhotoTable(1, "2014-11-10 23:08:31", "Bright Buildings !!!!!!!!!!! I will never leave NYC!!!!", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter1.jpg");
 //		instance.insertPhotoTable(2, "2014-11-13 04:02:21", "Hey, Hey, my girlfriend is pretty, right?~~", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter2.jpg");
 //		instance.insertPhotoTable(1, "2014-12-20 08:05:48", "A long way...", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter3.jpg");
+//		instance.deleteTable("Comments");
+//		instance.createCommentsTable();
+//		instance.insertCommentsTable(2, 5, "Pretty Cool!!", "2014-11-11 03:04:49");
+//		instance.insertCommentsTable(2, 5, "I live besides the central park, how lucky I am!", "2014-11-11 09:05:28");
+//		instance.insertCommentsTable(1, 5, "I should spend time go there!", "2014-11-11 18:05:48");
+//		instance.insertCommentsTable(2, 6, "haha so pretty!", "2014-11-13 04:02:48");
+//		instance.insertCommentsTable(1, 6, "I admire you!", "2014-11-13 08:05:48.0");
+//		instance.insertCommentsTable(1, 6, "sooooooooooo beautiful! that is miracle", "2014-11-13 15:05:48.0");
+//		instance.insertCommentsTable(1, 7, "Sooooo long!", "2014-11-11 03:04:49");
+//		instance.insertCommentsTable(2, 7, "I wish to play with snow", "2014-12-25 10:24:31");
+//		instance.insertCommentsTable(1, 7, "good picture", "2014-12-25 19:12:32");
+//		instance.insertCommentsTable(2, 8, "I have been there once!", "2014-12-12 09:04:24");
+//		instance.insertCommentsTable(1, 8, "how lovely this bridge is!", "2014-12-13 10:31:16");
+//		instance.insertCommentsTable(2, 8, "Fantanstic!!!!!!!!!!!!!!!!", "2014-12-14 21:52:01");
+//		instance.selectAllComments();
+//		Photo P = instance.selectOnePhoto(6);
+//		System.out.println(P.content);
+//		for (int i = 0; i < P.simmilarUrls.size(); i++) {
+//			System.out.println(P.simmilarUrls.get(i));
+//		}
+//		for (int i = 0; i < P.comments.size(); i++) {
+//			Comment C = P.comments.get(i);
+//			System.out.println(C.title);
+//			System.out.println(C.content);
+//		}
     }
     
     public void init() {
@@ -317,5 +343,111 @@ public class RdsLoader {
             e.printStackTrace();
         }
     	return res;
+    }
+    
+    public void createCommentsTable () {
+    	System.out.println("Creating comments table in given database...");
+        Statement stmt;
+        try {
+            stmt = conn.createStatement();
+            String sql = "CREATE TABLE Comments "+
+                    "(CommentsID Integer NOT NULL AUTO_INCREMENT, " +
+            		" UserID Integer NOT NULL, " + 
+                    " PhotoID Integer NOT NULL, " + 
+                    " Comments VARCHAR(255), " + 
+                    " Date TIMESTAMP," + 
+                    " PRIMARY KEY ( CommentsID ), " + 
+            		" FOREIGN KEY ( UserID ) REFERENCES Users(UserID), " +
+            		" FOREIGN KEY ( PhotoID ) REFERENCES Photoes(PhotoID))";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            System.out.println("Finished creating table Users");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void insertCommentsTable (int userID, int photoID, String comments, String date) {
+    	Statement stmt;
+    	try {
+    		stmt = conn.createStatement();
+    		String sql = "INSERT INTO Comments (UserID, PhotoID, Comments, Date) " + 
+    				"VALUES ("+userID+", "+photoID+", '"+comments+"', '"+date+"')";
+    		stmt.executeUpdate(sql);
+            stmt.close();
+            System.out.println("Finished inserting into table");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } 
+    }
+    
+    public void selectAllComments() {
+    	String sql = "SELECT * FROM Comments";
+    	Statement stmt;
+    	try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                int commentsId = rs.getInt("CommentsID");
+            	int photoId = rs.getInt("PhotoID");
+                int userId = rs.getInt("UserID");
+                String comments = rs.getString("Comments");
+                String date = rs.getString("Date");
+                System.out.println("CommentsId:"+commentsId+" photoId:"+photoId+" userId:"+userId+
+                		" Comments:"+comments+" date:"+date);
+            }
+            rs.close();
+            stmt.close();
+        } catch (Exception e) {
+        	System.err.println("Reconnect to database.");
+            e.printStackTrace();
+        }
+    } 
+    
+    public Photo selectOnePhoto(int photoID) {
+    	String sql = "Select P.Date, P.Des, P.url, U.Nickname from Photoes P, Users U where P.PhotoID="+photoID+
+    			" and U.UserID=P.UserID";
+    	String userName = "";
+    	String date = "";
+    	String des = "";
+    	String url = "";
+    	Statement stmt;
+    	try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+            	userName = rs.getString("Nickname");
+                date = rs.getString("Date");
+                des = rs.getString("Des");
+                url = rs.getString("URL");
+                break;
+            }
+            rs.close();
+            stmt.close();
+        } catch (Exception e) {
+        	System.err.println("Reconnect to database.");
+            e.printStackTrace();
+        }
+    	 
+    	List<Comment> comments = new ArrayList<Comment>();
+    	sql = "select C.Date, C.Comments, U.Nickname from Users U, Comments C"+
+    			" where C.PhotoID="+photoID+" and U.UserID=C.UserID";
+    	try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+            	String commentUserName = rs.getString("Nickname");
+                String commentDate = rs.getString("Date");
+                String commentContent = rs.getString("Comments");
+                comments.add(new Comment(commentUserName, commentContent, commentDate));
+            }
+            rs.close();
+            stmt.close();
+        } catch (Exception e) {
+        	System.err.println("Reconnect to database.");
+            e.printStackTrace();
+        }
+    	
+    	return new Photo(date, userName, des, url, null, comments);
     }
 }
