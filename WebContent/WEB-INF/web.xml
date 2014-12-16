@@ -59,4 +59,14 @@
     <servlet-name>SinglePhotoGetter</servlet-name>
     <url-pattern>/SinglePhotoGetter</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>postComment</display-name>
+    <servlet-name>postComment</servlet-name>
+    <servlet-class>postComment</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>postComment</servlet-name>
+    <url-pattern>/postComment</url-pattern>
+  </servlet-mapping>
 </web-app>
