@@ -39,4 +39,14 @@
     <servlet-name>lala</servlet-name>
     <url-pattern>/lala</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>PhotoGetter</display-name>
+    <servlet-name>PhotoGetter</servlet-name>
+    <servlet-class>PhotoGetter</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PhotoGetter</servlet-name>
+    <url-pattern>/PhotoGetter</url-pattern>
+  </servlet-mapping>
 </web-app>

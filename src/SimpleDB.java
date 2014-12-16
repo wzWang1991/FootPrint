@@ -234,7 +234,5 @@ public class SimpleDB {
     	
     	insert(tokenContent);
     	listDomains();
-    	
-
     }
 }

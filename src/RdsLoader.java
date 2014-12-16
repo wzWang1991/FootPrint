@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,20 +46,22 @@ public class RdsLoader {
     }
 	
     public static void main(String[] args) {
-    	System.out.println("adsd");
     	RdsLoader instance = RdsLoader.getInstance();
-    	String email="carr@gmail.com";
-		String password = "henry";
 		instance.init();
-		UserInfo userInfo = instance.checkPassword(email, password);
-		System.out.println(userInfo.getEmail());
-//    	instanceTmp.deleteTable("Users");
-//    	instanceTmp.createUsersInfoTable();
-//    	instanceTmp.insert("Users");
-//    	instanceTmp.selectAll("Users");
-//    	instanceTmp.checkPassword("carr@gmail.com","henry");
-//    	System.out.println(instanceTmp.registerNewUser("qiuzhen@gmail.com", "zq2130", "qq"));
-	}
+//		instance.deleteTable("Photoes");
+//		instance.createPhotoTable();
+//		instance.selectAllPhotoes();
+//		instance.insertPhotoTable(2, "2014-9-10 12:12:12", "really good", 12.12, 23.23, "https://s3.amazonaws.com/footprint.linhuang/cen.jpeg");
+//		instance.selectAllPhotoes();
+		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation("Autumn", 0, 0, 0, 0);
+		System.out.println(res.size());
+		for (int i = 0; i <res.size(); i++) {
+			System.out.println(res.get(i).title);
+			System.out.println(res.get(i).date);
+			System.out.println(res.get(i).content);
+			System.out.println(res.get(i).images.get(0));
+		}
+    }
     
     public void init() {
         try {
@@ -197,5 +200,114 @@ public class RdsLoader {
     		return userInfo;
     	}
     	else return null;
+    }
+    
+    public void insertPhotoTable(int userID, String date, String des, double lat, double lon, String url) {
+    	Statement stmt;
+    	try {
+    		stmt = conn.createStatement();
+    		String sql = "INSERT INTO Photoes (UserID, Date, Des, Lat, Lon, URL) " + 
+    				"VALUES ("+userID+", '"+date+"', '"+des+"', "+lat+", "+lon+", '"+url+"')";
+    		System.out.println(sql);
+    		stmt.executeUpdate(sql);
+            stmt.close();
+            System.out.println("Finished inserting into table");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } 
+    }
+    
+    public void createPhotoTable() {
+    	System.out.println("Creating photo table in given database...");
+        Statement stmt;
+        try {
+            stmt = conn.createStatement();
+            String sql = "CREATE TABLE Photoes "+
+                    "(PhotoID Integer NOT NULL AUTO_INCREMENT, " +
+            		" UserID Integer NOT NULL, " + 
+                    " Date TIMESTAMP, " + 
+                    " Des VARCHAR(255), " + 
+            		" Lat Double, " +
+                    " Lon Double, " + 
+            		" URL VARCHAR(255), " + 
+                    " PRIMARY KEY ( PhotoID ), " + 
+            		" FOREIGN KEY ( UserID ) REFERENCES Users(UserID))";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            System.out.println("Finished creating table Users");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void selectAllPhotoes() {
+    	String sql = "SELECT * FROM Photoes";
+    	Statement stmt;
+    	try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                int photoId = rs.getInt("PhotoID");
+                int userId = rs.getInt("UserID");
+                String date = rs.getString("Date");
+                String res = rs.getString("Des");
+                double lat = rs.getDouble("Lat");
+                double lon = rs.getDouble("Lon");
+                String url = rs.getString("url");
+                System.out.println("photoId:"+photoId+" userId:"+userId+" date:"+date+
+                		" res:"+res+" lat:"+lat+" lon:"+lon+" url:"+url);
+            }
+            rs.close();
+            stmt.close();
+        } catch (Exception e) {
+        	System.err.println("Reconnect to database.");
+            e.printStackTrace();
+        }
+    }
+    
+    public List<PhotoInfo> filterPhotoByTimeAndLocation (String season, double latBegin, 
+    		double latEnd, double lonBegin, double lonEnd) {
+    	season = season.toLowerCase();
+    	List<PhotoInfo> res = new ArrayList<PhotoInfo> ();
+    	String timeBegin = "";
+    	String timeEnd = "";
+    	switch (season) {
+    	case "spring": 
+    		timeBegin = "2014-02-01 00:00:00";
+    		timeEnd = "2014-04-30 23:59:59";
+    		break;
+    	case "summer":
+    		timeBegin = "2014-05-01 00:00:00";
+    		timeEnd = "2014-07-31 23:59:59";
+    		break;
+    	case "autumn":
+    		timeBegin = "2014-08-01 00:00:00";
+    		timeEnd = "2014-10-31 23:59:59";
+    		break;
+    	case "winter":
+    		timeBegin = "2014-11-01 00:00:00";
+    		timeEnd = "2015-01-31 23:59:59";
+    		break;
+    	}
+    	Statement stmt;
+    	try {
+    		stmt = conn.createStatement();
+    		String sql = "select U.Nickname, P.Date, P.Des, P.url from Photoes P, Users U where Date>='"
+    				+timeBegin+"' and Date<='"+timeEnd+"' and U.UserID=P.UserID";
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+            	String userName = rs.getString("Nickname");
+                String date = rs.getString("Date");
+                String des = rs.getString("Des");
+                String url = rs.getString("URL");
+                res.add(new PhotoInfo(date, userName, des, url));
+            }
+            rs.close();
+            stmt.close();
+    	} catch (Exception e) {
+        	System.err.println("Reconnect to database.");
+            e.printStackTrace();
+        }
+    	return res;
     }
 }
