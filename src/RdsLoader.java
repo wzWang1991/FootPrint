@@ -49,6 +49,8 @@ public class RdsLoader {
     public static void main(String[] args) {
     	RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
+//		instance.selectAll("Users");
+//		instance.insert("Users");
 //		instance.deleteTable("Comments");
 //		instance.deleteTable("Photoes");
 //		instance.createPhotoTable();
@@ -95,7 +97,10 @@ public class RdsLoader {
 //		instance.createRatingTable();
 //		instance.insertRatingsTable(1, 6, 5);
 //		instance.insertRatingsTable(2, 7, 5);
-//		instance.selectAllRatings();
+		instance.selectAllRatings();
+//		System.out.println(instance.selectOneRating(1, 6));
+//		instance.insertRatingsTable(1, 6, 3);
+//		System.out.println(instance.selectOneRating(1, 6));
     }
     
     public void init() {
@@ -172,7 +177,7 @@ public class RdsLoader {
         try {
             stmt = conn.createStatement();
             String sql = "INSERT INTO " +table + " (Email, Password, FaceBook, Nickname)"+
-                        " VALUES ('carr@gmail.com', 'henry', true, 'carr')";
+                        " VALUES ('Cloud.Computing@columbia.edu', 'interesting', true, 'cloud')";
 
             stmt.executeUpdate(sql);
             stmt.close();
@@ -501,15 +506,38 @@ public class RdsLoader {
     
     public void insertRatingsTable (int userId, int photoId, int rank) {
     	Statement stmt;
+    	String sql = "";
+    	if (selectOneRating(userId, photoId) == 0) {
+    		sql = "INSERT INTO Ratings (UserID, PhotoID, Rank) " + 
+    				"VALUES ("+userId+", "+photoId+", "+rank+")";
+    	}
+    	else {
+    		sql = "UPDATE Ratings SET Rank="+rank+" where UserID="+userId;
+    	}
     	try {
     		stmt = conn.createStatement();
-    		String sql = "INSERT INTO Ratings (UserID, PhotoID, Rank) " + 
-    				"VALUES ("+userId+", "+photoId+", "+rank+")";
     		stmt.executeUpdate(sql);
             stmt.close();
             System.out.println("Finished inserting into table");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public int selectOneRating (int userId, int photoId) {
+    	Statement stmt;
+    	try {
+    		stmt = conn.createStatement();
+    		String sql = "select Rank from Ratings where UserID="+userId+" and PhotoID="+photoId;
+    		ResultSet rs = stmt.executeQuery(sql);
+    		while(rs.next()){
+    			return rs.getInt("Rank");
+    		}
+            stmt.close();
+            System.out.println("Finished inserting into table");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return 0;
     }
 }

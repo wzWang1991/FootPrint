@@ -89,4 +89,14 @@
     <servlet-name>RatingPoster</servlet-name>
     <url-pattern>/RatingPoster</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RatingGetter</display-name>
+    <servlet-name>RatingGetter</servlet-name>
+    <servlet-class>RatingGetter</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RatingGetter</servlet-name>
+    <url-pattern>/RatingGetter</url-pattern>
+  </servlet-mapping>
 </web-app>
