@@ -40,7 +40,7 @@ public class getToken extends HttpServlet {
 			instance.init();
 			UserInfo userInfo = instance.checkPassword(email, password);
 			if (userInfo!=null) {
-				result = TokenContent.getNewToken(TokenGenerator.getToken(), userInfo.getEmail(), userInfo.getNickname(), userInfo.getFaceBook());
+				result = TokenContent.getNewToken(TokenGenerator.getToken(), userInfo.getUserID(), userInfo.getEmail(), userInfo.getNickname(), userInfo.getFaceBook());
 			}
 		} else {
 			// Facebook login. Check if this email in the database.
@@ -74,7 +74,7 @@ public class getToken extends HttpServlet {
 			instance.init();
 			UserInfo userInfo = instance.checkPassword(email, password);
 			if (userInfo!=null) {
-				result = TokenContent.getNewToken("123", userInfo.getEmail(), userInfo.getNickname(), userInfo.getFaceBook());
+				result = TokenContent.getNewToken("123", userInfo.getUserID(), userInfo.getEmail(), userInfo.getNickname(), userInfo.getFaceBook());
 			}
 		} else {
 			// Facebook login. Check if this email in the database.

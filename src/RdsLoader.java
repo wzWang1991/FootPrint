@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -83,14 +84,18 @@ public class RdsLoader {
 //		instance.selectAllComments();
 //		Photo P = instance.selectOnePhoto(6);
 //		System.out.println(P.content);
-//		for (int i = 0; i < P.simmilarUrls.size(); i++) {
-//			System.out.println(P.simmilarUrls.get(i));
+//		for (int i = 0; i < P.similarPhotoes.size(); i++) {
+//			System.out.println(P.similarPhotoes.get(i).photoId);
 //		}
 //		for (int i = 0; i < P.comments.size(); i++) {
 //			Comment C = P.comments.get(i);
 //			System.out.println(C.title);
 //			System.out.println(C.content);
 //		}
+//		instance.createRatingTable();
+//		instance.insertRatingsTable(1, 6, 5);
+//		instance.insertRatingsTable(2, 7, 5);
+//		instance.selectAllRatings();
     }
     
     public void init() {
@@ -449,5 +454,62 @@ public class RdsLoader {
         }
     	
     	return new Photo(date, userName, des, url, null, comments);
+    }
+    
+    public void createRatingTable () {
+    	System.out.println("Creating rating table in given database...");
+        Statement stmt;
+        try {
+            stmt = conn.createStatement();
+            String sql = "CREATE TABLE Ratings "+
+                    "(RatingsID Integer NOT NULL AUTO_INCREMENT, " +
+            		" UserID Integer NOT NULL, " + 
+                    " PhotoID Integer NOT NULL, " + 
+                    " Rank VARCHAR(255), " + 
+                    " PRIMARY KEY ( RatingsID ), " + 
+            		" FOREIGN KEY ( UserID ) REFERENCES Users(UserID), " +
+            		" FOREIGN KEY ( PhotoID ) REFERENCES Photoes(PhotoID))";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            System.out.println("Finished creating table Users");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void selectAllRatings() {
+    	String sql = "SELECT * FROM Ratings";
+    	Statement stmt;
+    	try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                int ratingsId = rs.getInt("RatingsID");
+            	int photoId = rs.getInt("PhotoID");
+                int userId = rs.getInt("UserID");
+                int rank = rs.getInt("Rank");
+                System.out.println("RatingsId:"+ratingsId+" photoId:"+photoId+" userId:"+userId+
+                		" Rank:"+rank);
+            }
+            rs.close();
+            stmt.close();
+        } catch (Exception e) {
+        	System.err.println("Reconnect to database.");
+            e.printStackTrace();
+        }
+    }
+    
+    public void insertRatingsTable (int userId, int photoId, int rank) {
+    	Statement stmt;
+    	try {
+    		stmt = conn.createStatement();
+    		String sql = "INSERT INTO Ratings (UserID, PhotoID, Rank) " + 
+    				"VALUES ("+userId+", "+photoId+", "+rank+")";
+    		stmt.executeUpdate(sql);
+            stmt.close();
+            System.out.println("Finished inserting into table");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

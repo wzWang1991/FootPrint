@@ -8,7 +8,7 @@ public class Photo {
 	public String dateFormat;
 	public String title;
 	public String content;
-	public List<String> similarUrls;
+	public List<SimilarPhoto> similarPhotoes;
 	public List<Comment> comments;
 	
 	public Photo(String date, String title, String content, String url, List<String> urls, List<Comment> comments) {
@@ -17,11 +17,11 @@ public class Photo {
 		this.dateFormat = "D/MM/YY h:mm A";
 		this.title = title;
 		this.content = content;
-		this.similarUrls = new LinkedList<String>();
-		this.similarUrls.add("https://s3.amazonaws.com/footprint.linhuang/winter.jpg");
-		this.similarUrls.add("https://s3.amazonaws.com/footprint.linhuang/winter1.jpg");
-		this.similarUrls.add("https://s3.amazonaws.com/footprint.linhuang/winter2.jpg");
-		this.similarUrls.add("https://s3.amazonaws.com/footprint.linhuang/winter3.jpg");
+		this.similarPhotoes = new LinkedList<SimilarPhoto>();
+		this.similarPhotoes.add(new SimilarPhoto(8,"https://s3.amazonaws.com/footprint.linhuang/winter.jpg"));
+		this.similarPhotoes.add(new SimilarPhoto(5,"https://s3.amazonaws.com/footprint.linhuang/winter1.jpg"));
+		this.similarPhotoes.add(new SimilarPhoto(6,"https://s3.amazonaws.com/footprint.linhuang/winter2.jpg"));
+		this.similarPhotoes.add(new SimilarPhoto(7,"https://s3.amazonaws.com/footprint.linhuang/winter3.jpg"));
 		this.comments = comments;
 	}
 }

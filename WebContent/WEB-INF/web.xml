@@ -69,4 +69,24 @@
     <servlet-name>postComment</servlet-name>
     <url-pattern>/postComment</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CommentPoster</display-name>
+    <servlet-name>CommentPoster</servlet-name>
+    <servlet-class>CommentPoster</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CommentPoster</servlet-name>
+    <url-pattern>/CommentPoster</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RatingPoster</display-name>
+    <servlet-name>RatingPoster</servlet-name>
+    <servlet-class>RatingPoster</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RatingPoster</servlet-name>
+    <url-pattern>/RatingPoster</url-pattern>
+  </servlet-mapping>
 </web-app>
