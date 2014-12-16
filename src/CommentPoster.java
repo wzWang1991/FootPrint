@@ -30,7 +30,7 @@ public class CommentPoster extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int photoId = Integer.parseInt(request.getParameter("photoId"));
 		int userId = Integer.parseInt(request.getParameter("userId"));
-		String comments = request.getParameter("comments");
+		String comments = request.getParameter("text");
 		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String date = sDateFormat.format(new java.util.Date()); 
 		RdsLoader instance = RdsLoader.getInstance();
@@ -44,7 +44,7 @@ public class CommentPoster extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int photoId = Integer.parseInt(request.getParameter("photoId"));
 		int userId = Integer.parseInt(request.getParameter("userId"));
-		String comments = request.getParameter("comments");
+		String comments = request.getParameter("text");
 		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String date = sDateFormat.format(new java.util.Date()); 
 		RdsLoader instance = RdsLoader.getInstance();
