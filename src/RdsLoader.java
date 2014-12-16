@@ -299,7 +299,7 @@ public class RdsLoader {
     	Statement stmt;
     	try {
     		stmt = conn.createStatement();
-    		String sql = "select U.Nickname, P.UserID, P.Date, P.Des, P.url from Photoes P, Users U where Date>='"
+    		String sql = "select U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, Users U where Date>='"
     				+timeBegin+"' and Date<='"+timeEnd+"' and U.UserID=P.UserID";
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()){

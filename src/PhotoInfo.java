@@ -3,7 +3,7 @@ import java.util.List;
 
 
 public class PhotoInfo {
-	public int photoID;
+	public int photoId;
 	public String type;
 	public String date;
 	public String dateFormat;
@@ -11,8 +11,8 @@ public class PhotoInfo {
 	public String content;
 	public List<String> images;
 	
-	public PhotoInfo(int photoID, String date, String title, String content, String image) {
-		this.photoID = photoID;
+	public PhotoInfo(int photoId, String date, String title, String content, String image) {
+		this.photoId = photoId;
 		this.type = "blog_post";
 		this.date = date;
 		this.dateFormat = "D/MM/YY h:mm A";
