@@ -49,7 +49,7 @@ public class RdsLoader {
     	return this.password != null;
     }
 	
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
     	RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
 //		instance.selectAll("Users");
@@ -165,6 +165,7 @@ public class RdsLoader {
 //		instance.insertRatingsTable(10, 19, 5);
 //		instance.insertRatingsTable(11, 19, 5);
 //		instance.insertRatingsTable(11, 20, 5);
+		instance.generateCsvForRatings();
     }
     
     public void init() {
@@ -623,7 +624,7 @@ public class RdsLoader {
     	return formatter.format(0);
     }
     
-    public void generateCsvForRatings () throws IOException {
+    public void generateCsvForRatings() throws IOException {
     	FileWriter fw = new FileWriter("ratings.csv");
     	Statement stmt;
     	try {
@@ -631,13 +632,16 @@ public class RdsLoader {
     		String sql = "select * from Ratings";
     		ResultSet rs = stmt.executeQuery(sql);
     		while(rs.next()){
-    			int userId = rs.getInt("UserID");
-    			int photoId = rs.getInt("PhotoID");
-    			int rank = rs.getInt("Rank");
-    			
+    			String userId = String.valueOf(rs.getInt("UserID"));
+    			String photoId = String.valueOf(rs.getInt("PhotoID"));
+    			String rank = String.valueOf(rs.getInt("Rank"));
+    			String line = userId+","+photoId+","+rank;
+    			fw.write(line);
+    			fw.write("\n");
     		}
             stmt.close();
-            System.out.println("Finished inserting into table");
+            fw.flush();
+            fw.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

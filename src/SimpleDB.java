@@ -230,9 +230,9 @@ public class SimpleDB {
 
     public static void main(String[] args) throws Exception {
     	init(null);
-    	TokenContent tokenContent = TokenContent.getNewToken("hehe", "@", "hehe", true);
+//    	TokenContent tokenContent = TokenContent.getNewToken("hehe", "@", "hehe", true);
     	
-    	insert(tokenContent);
+//    	insert(tokenContent);
     	listDomains();
     }
 }
