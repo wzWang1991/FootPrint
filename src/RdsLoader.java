@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.mahout.cf.taste.common.TasteException;
+
 public class RdsLoader {
 	
 	final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -49,7 +51,7 @@ public class RdsLoader {
     	return this.password != null;
     }
 	
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, TasteException {
     	RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
 //		instance.selectAll("Users");
@@ -166,6 +168,7 @@ public class RdsLoader {
 //		instance.insertRatingsTable(11, 19, 5);
 //		instance.insertRatingsTable(11, 20, 5);
 		instance.generateCsvForRatings();
+		Recommender.recomender(1);
     }
     
     public void init() {
@@ -645,5 +648,22 @@ public class RdsLoader {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public String getPhotoUrl(int photoId) {
+    	Statement stmt;
+    	try {
+    		stmt = conn.createStatement();
+    		String sql = "select URL from Photoes where PhotoID="+photoId;
+    		ResultSet rs = stmt.executeQuery(sql);
+    		while(rs.next()){
+    			String url = String.valueOf(rs.getString("URL"));
+    			return url;
+    		}
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return "";
     }
 }

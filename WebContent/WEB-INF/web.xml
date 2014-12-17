@@ -99,4 +99,14 @@
     <servlet-name>RatingGetter</servlet-name>
     <url-pattern>/RatingGetter</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>RecommendationGetter</display-name>
+    <servlet-name>RecommendationGetter</servlet-name>
+    <servlet-class>RecommendationGetter</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RecommendationGetter</servlet-name>
+    <url-pattern>/RecommendationGetter</url-pattern>
+  </servlet-mapping>
 </web-app>
