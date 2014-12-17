@@ -31,9 +31,10 @@ public class SinglePhotoGetter extends HttpServlet {
 		Gson gson = new Gson();
 		response.setContentType("application/json"); 
 		int photoId = Integer.parseInt(request.getParameter("photoId"));
+		int userId = Integer.parseInt(request.getParameter("userId"));
 		RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
-		Photo res = instance.selectOnePhoto(photoId);
+		Photo res = instance.selectOnePhoto(photoId, userId);
 		PrintWriter out=response.getWriter();
 		String ans=gson.toJson(res);
 		out.println(ans);
@@ -47,9 +48,10 @@ public class SinglePhotoGetter extends HttpServlet {
 		Gson gson = new Gson();
 		response.setContentType("application/json"); 
 		int photoId = Integer.parseInt(request.getParameter("photoId"));
+		int userId = Integer.parseInt(request.getParameter("userId"));
 		RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
-		Photo res = instance.selectOnePhoto(photoId);
+		Photo res = instance.selectOnePhoto(photoId, userId);
 		PrintWriter out=response.getWriter();
 		String ans=gson.toJson(res);
 		out.println(ans);

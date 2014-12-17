@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,8 +59,8 @@ public class RdsLoader {
 //		instance.selectAllPhotoes();
 //		instance.insertPhotoTable(2, "2014-9-10 12:12:12", "really good", 12.12, 23.23, "https://s3.amazonaws.com/footprint.linhuang/cen.jpeg");
 //		instance.selectAllPhotoes();
-		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation("all", 0, 0, 0, 0);
-		System.out.println(res.size());
+//		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation("all", 0, 0, 0, 0);
+//		System.out.println(res.size());
 //		for (int i = 0; i <res.size(); i++) {
 //			System.out.println(res.get(i).title);
 //			System.out.println(res.get(i).date);
@@ -84,29 +86,84 @@ public class RdsLoader {
 //		instance.insertCommentsTable(1, 8, "how lovely this bridge is!", "2014-12-13 10:31:16");
 //		instance.insertCommentsTable(2, 8, "Fantanstic!!!!!!!!!!!!!!!!", "2014-12-14 21:52:01");
 //		instance.selectAllComments();
-//		Photo P = instance.selectOnePhoto(6);
+//		Photo P = instance.selectOnePhoto(6,3);
 //		System.out.println(P.content);
-//		for (int i = 0; i < P.similarPhotoes.size(); i++) {
-//			System.out.println(P.similarPhotoes.get(i).photoId);
+//		for (int i = 0; i < P.similarPhotos.size(); i++) {
+//			System.out.println(P.similarPhotos.get(i).photoId);
 //		}
 //		for (int i = 0; i < P.comments.size(); i++) {
 //			Comment C = P.comments.get(i);
 //			System.out.println(C.title);
 //			System.out.println(C.content);
 //		}
+//		System.out.println(P.avgRank);
+//		System.out.println(P.rating);
 //		instance.createRatingTable();
 //		instance.insertRatingsTable(1, 6, 5);
 //		instance.insertRatingsTable(2, 7, 5);
 //		instance.selectAllRatings();
 //		System.out.println(instance.selectOneRating(1, 6));
 //		instance.insertRatingsTable(1, 6, 3);
-//		System.out.println(instance.selectOneRating(1, 6));
+//		System.out.println(instance.selectOneRating(3, 6));
 //		instance.insertPhotoTable(2, "2013-6-10 02:08:20", "This stone memorial sits at the Park's Fifth Avenue perimeter wall. It features an engraved profile of the renowned American newspaper editor for which it was named and an adjacent curved granite bench.", 40.791814, -73.953171, "https://s3-us-west-1.amazonaws.com/centralpark/arthur-brisbane-l.jpg");
 //		instance.insertPhotoTable(3, "2014-2-18 17:23:41", "One of the Park's most picturesque landscapes, the reservoir is 40 feet deep and holds a billion gallons of water. ", 40.784962, -73.963374, "https://s3-us-west-1.amazonaws.com/centralpark/reservoir-l.jpg");
 //		instance.insertPhotoTable(4, "2014-1-4 16:23:01", "Seneca Village may possibly have been Manhattan's first stable community of African American property owners.", 40.782781, -73.970122, "https://s3-us-west-1.amazonaws.com/centralpark/seneca-village-l.jpg");
 //		instance.insertPhotoTable(8, "2014-4-27 14:31:09", "The Pond is one of Central Parks seven naturalistic water bodies. When Frederick Law Olmsted and Calvert Vaux designed Central Park, they imagined an immediate reprieve from the City's streets. ", 40.766109, -73.973985, "https://s3-us-west-1.amazonaws.com/centralpark/pond-l.jpg");
 //		instance.insertPhotoTable(9, "2014-5-31 18:32:12", "Although today the Park's largest lawn without ballfields features people it was originally the home to a flock of pure bred sheep from 1864 until 1934.", 40.772638, -73.975305, "https://s3-us-west-1.amazonaws.com/centralpark/sheep-meadow-l.jpg");
 //		instance.insertPhotoTable(10, "2009-8-7 08:04:24", "This area is popular with families and children because of the famous climbing sculptures, the story-telling programs, the model boats, the cafe, and the site in the children's classic Stuart Little. ", 40.774279, -73.967344, "https://s3-us-west-1.amazonaws.com/centralpark/conservatory-water-l.jpg");
+//		instance.insertRatingsTable(1, 8, 4);
+//		instance.insertRatingsTable(1, 9, 5);
+//		instance.insertRatingsTable(1, 11, 4);
+//		instance.insertRatingsTable(1, 12, 3);
+//		instance.insertRatingsTable(1, 14, 5);
+//		instance.insertRatingsTable(2, 8, 5);
+//		instance.insertRatingsTable(2, 10, 5);
+//		instance.insertRatingsTable(2, 11, 5);
+//		instance.insertRatingsTable(2, 12, 3);
+//		instance.insertRatingsTable(2, 15, 4);
+//		instance.insertRatingsTable(3, 6, 2);
+//		instance.insertRatingsTable(3, 7, 3);
+//		instance.insertRatingsTable(3, 8, 4);
+//		instance.insertRatingsTable(3, 10, 5);
+//		instance.insertRatingsTable(3, 11, 3);
+//		instance.insertRatingsTable(4, 12, 5);
+//		instance.insertRatingsTable(4, 13, 5);
+//		instance.insertRatingsTable(4, 14, 5);
+//		instance.insertRatingsTable(4, 16, 5);
+//		instance.insertRatingsTable(4, 18, 2);
+//		instance.insertRatingsTable(5, 7, 3);
+//		instance.insertRatingsTable(5, 9, 3);
+//		instance.insertRatingsTable(5, 11, 3);
+//		instance.insertRatingsTable(5, 13, 3);
+//		instance.insertRatingsTable(5, 14, 4);
+//		instance.insertRatingsTable(5, 15, 4);
+//		instance.insertRatingsTable(5, 16, 4);
+//		instance.insertRatingsTable(5, 17, 5);
+//		instance.insertRatingsTable(6, 10, 3);
+//		instance.insertRatingsTable(6, 11, 5);
+//		instance.insertRatingsTable(6, 13, 3);
+//		instance.insertRatingsTable(6, 14, 4);
+//		instance.insertRatingsTable(7, 6, 5);
+//		instance.insertRatingsTable(7, 7, 5);
+//		instance.insertRatingsTable(7, 8, 5);
+//		instance.insertRatingsTable(8, 7, 2);
+//		instance.insertRatingsTable(8, 9, 2);
+//		instance.insertRatingsTable(8, 11, 5);
+//		instance.insertRatingsTable(8, 13, 4);
+//		instance.insertRatingsTable(8, 14, 3);
+//		instance.insertRatingsTable(8, 15, 2);
+//		instance.insertRatingsTable(9, 13, 4);
+//		instance.insertRatingsTable(9, 14, 5);
+//		instance.insertRatingsTable(9, 15, 3);
+//		instance.insertRatingsTable(9, 16, 2);
+//		instance.insertRatingsTable(10, 12, 5);
+//		instance.insertRatingsTable(10, 13, 3);
+//		instance.insertRatingsTable(10, 14, 4);
+//		instance.insertRatingsTable(10, 17, 2);
+//		instance.insertRatingsTable(10, 18, 1);
+//		instance.insertRatingsTable(10, 19, 5);
+//		instance.insertRatingsTable(11, 19, 5);
+//		instance.insertRatingsTable(11, 20, 5);
     }
     
     public void init() {
@@ -419,7 +476,7 @@ public class RdsLoader {
         }
     } 
     
-    public Photo selectOnePhoto(int photoID) {
+    public Photo selectOnePhoto(int photoID, int userID) {
     	String sql = "Select P.Date, P.Des, P.url, U.Nickname from Photoes P, Users U where P.PhotoID="+photoID+
     			" and U.UserID=P.UserID";
     	String userName = "";
@@ -462,8 +519,9 @@ public class RdsLoader {
         	System.err.println("Reconnect to database.");
             e.printStackTrace();
         }
-    	
-    	return new Photo(date, userName, des, url, null, comments);
+    	int rating = selectOneRating(userID, photoID);
+    	String avgRank = calculateAvgRank(photoID);
+    	return new Photo(date, userName, des, url, null, comments, rating, avgRank);
     }
     
     public void createRatingTable () {
@@ -544,5 +602,24 @@ public class RdsLoader {
             e.printStackTrace();
         }
     	return 0;
+    }
+    
+    public String calculateAvgRank (int photoId) {
+    	NumberFormat formatter = new DecimalFormat("#0.00");     
+    	Statement stmt;
+    	try {
+    		stmt = conn.createStatement();
+    		String sql = "select AVG(Rank) as avg from Ratings where PhotoID="+photoId;
+    		ResultSet rs = stmt.executeQuery(sql);
+    		while(rs.next()){
+    			double res = rs.getDouble("avg");
+    			return(formatter.format(res));
+    		}
+            stmt.close();
+            System.out.println("Finished inserting into table");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return formatter.format(0);
     }
 }
