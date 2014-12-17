@@ -57,8 +57,8 @@ public class RdsLoader {
 //		instance.selectAllPhotoes();
 //		instance.insertPhotoTable(2, "2014-9-10 12:12:12", "really good", 12.12, 23.23, "https://s3.amazonaws.com/footprint.linhuang/cen.jpeg");
 //		instance.selectAllPhotoes();
-//		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation("winter", 0, 0, 0, 0);
-//		System.out.println(res.size());
+		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation("all", 0, 0, 0, 0);
+		System.out.println(res.size());
 //		for (int i = 0; i <res.size(); i++) {
 //			System.out.println(res.get(i).title);
 //			System.out.println(res.get(i).date);
@@ -97,10 +97,16 @@ public class RdsLoader {
 //		instance.createRatingTable();
 //		instance.insertRatingsTable(1, 6, 5);
 //		instance.insertRatingsTable(2, 7, 5);
-		instance.selectAllRatings();
+//		instance.selectAllRatings();
 //		System.out.println(instance.selectOneRating(1, 6));
 //		instance.insertRatingsTable(1, 6, 3);
 //		System.out.println(instance.selectOneRating(1, 6));
+//		instance.insertPhotoTable(2, "2013-6-10 02:08:20", "This stone memorial sits at the Park's Fifth Avenue perimeter wall. It features an engraved profile of the renowned American newspaper editor for which it was named and an adjacent curved granite bench.", 40.791814, -73.953171, "https://s3-us-west-1.amazonaws.com/centralpark/arthur-brisbane-l.jpg");
+//		instance.insertPhotoTable(3, "2014-2-18 17:23:41", "One of the Park's most picturesque landscapes, the reservoir is 40 feet deep and holds a billion gallons of water. ", 40.784962, -73.963374, "https://s3-us-west-1.amazonaws.com/centralpark/reservoir-l.jpg");
+//		instance.insertPhotoTable(4, "2014-1-4 16:23:01", "Seneca Village may possibly have been Manhattan's first stable community of African American property owners.", 40.782781, -73.970122, "https://s3-us-west-1.amazonaws.com/centralpark/seneca-village-l.jpg");
+//		instance.insertPhotoTable(8, "2014-4-27 14:31:09", "The Pond is one of Central Parks seven naturalistic water bodies. When Frederick Law Olmsted and Calvert Vaux designed Central Park, they imagined an immediate reprieve from the City's streets. ", 40.766109, -73.973985, "https://s3-us-west-1.amazonaws.com/centralpark/pond-l.jpg");
+//		instance.insertPhotoTable(9, "2014-5-31 18:32:12", "Although today the Park's largest lawn without ballfields features people it was originally the home to a flock of pure bred sheep from 1864 until 1934.", 40.772638, -73.975305, "https://s3-us-west-1.amazonaws.com/centralpark/sheep-meadow-l.jpg");
+//		instance.insertPhotoTable(10, "2009-8-7 08:04:24", "This area is popular with families and children because of the famous climbing sculptures, the story-telling programs, the model boats, the cafe, and the site in the children's classic Stuart Little. ", 40.774279, -73.967344, "https://s3-us-west-1.amazonaws.com/centralpark/conservatory-water-l.jpg");
     }
     
     public void init() {
@@ -244,6 +250,7 @@ public class RdsLoader {
     
     public void insertPhotoTable(int userID, String date, String des, double lat, double lon, String url) {
     	Statement stmt;
+    	des = des.replace("'", "\\'");
     	try {
     		stmt = conn.createStatement();
     		String sql = "INSERT INTO Photoes (UserID, Date, Des, Lat, Lon, URL) " + 
@@ -309,34 +316,32 @@ public class RdsLoader {
     		double latEnd, double lonBegin, double lonEnd) {
     	season = season.toLowerCase();
     	List<PhotoInfo> res = new ArrayList<PhotoInfo> ();
-    	String timeBegin = "";
-    	String timeEnd = "";
+    	String sql = "";
     	switch (season) {
     	case "spring": 
-    		timeBegin = "2014-02-01 00:00:00";
-    		timeEnd = "2014-04-30 23:59:59";
+    		sql = "select U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
+    				+ "Users U where (month(P.Date)>=2 and month(P.date)<=4) and U.UserID=P.UserID";
     		break;
     	case "summer":
-    		timeBegin = "2014-05-01 00:00:00";
-    		timeEnd = "2014-07-31 23:59:59";
+    		sql = "select U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
+    				+ "Users U where (month(P.Date)>=5 and month(P.Date)<=7) and U.UserID=P.UserID";
     		break;
     	case "autumn":
-    		timeBegin = "2014-08-01 00:00:00";
-    		timeEnd = "2014-10-31 23:59:59";
+    		sql = "select U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
+    				+ "Users U where (month(P.Date)>=8 and month(P.Date)<=10) and U.UserID=P.UserID";
     		break;
     	case "winter":
-    		timeBegin = "2014-11-01 00:00:00";
-    		timeEnd = "2015-01-31 23:59:59";
+    		sql = "select U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
+    				+ "Users U where (month(P.Date)>=11 or month(P.Date)<=1) and U.UserID=P.UserID";
     		break;
     	case "all":
-    		timeBegin = "2000-01-01 00:00:00";
-    		timeEnd = "2020-01-01 00:00:00";
+    		sql = "select U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
+    				+ "Users U where U.UserID=P.UserID";
     	}
+    	System.out.println(sql);
     	Statement stmt;
     	try {
     		stmt = conn.createStatement();
-    		String sql = "select U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, Users U where Date>='"
-    				+timeBegin+"' and Date<='"+timeEnd+"' and U.UserID=P.UserID";
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()){
             	int photoId = rs.getInt("PhotoID");
