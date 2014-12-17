@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -605,7 +606,7 @@ public class RdsLoader {
     }
     
     public String calculateAvgRank (int photoId) {
-    	NumberFormat formatter = new DecimalFormat("#0.00");     
+    	NumberFormat formatter = new DecimalFormat("#0.0");     
     	Statement stmt;
     	try {
     		stmt = conn.createStatement();
@@ -616,10 +617,29 @@ public class RdsLoader {
     			return(formatter.format(res));
     		}
             stmt.close();
-            System.out.println("Finished inserting into table");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     	return formatter.format(0);
+    }
+    
+    public void generateCsvForRatings () throws IOException {
+    	FileWriter fw = new FileWriter("ratings.csv");
+    	Statement stmt;
+    	try {
+    		stmt = conn.createStatement();
+    		String sql = "select * from Ratings";
+    		ResultSet rs = stmt.executeQuery(sql);
+    		while(rs.next()){
+    			int userId = rs.getInt("UserID");
+    			int photoId = rs.getInt("PhotoID");
+    			int rank = rs.getInt("Rank");
+    			
+    		}
+            stmt.close();
+            System.out.println("Finished inserting into table");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
