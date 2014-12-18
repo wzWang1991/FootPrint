@@ -109,7 +109,7 @@ public class RdsLoader {
 //		instance.insertRatingsTable(1, 6, 3);
 //		System.out.println(instance.selectOneRating(3, 6));
 //		instance.insertPhotoTable(2, "2013-6-10 02:08:20", "This stone memorial sits at the Park's Fifth Avenue perimeter wall. It features an engraved profile of the renowned American newspaper editor for which it was named and an adjacent curved granite bench.", 40.791814, -73.953171, "https://s3-us-west-1.amazonaws.com/centralpark/arthur-brisbane-l.jpg");
-//		instance.insertPhotoTable(3, "2014-2-18 17:23:41", "One of the Park's most picturesque landscapes, the reservoir is 40 feet deep and holds a billion gallons of water. ", 40.784962, -73.963374, "https://s3-us-west-1.amazonaws.com/centralpark/reservoir-l.jpg");
+		instance.insertPhotoTable(3, "2014-2-18 17:23:41", "One of the Park's most picturesque landscapes, the reservoir is 40 feet deep and holds a billion gallons of water. ", 40.784962, -73.963374, "https://s3-us-west-1.amazonaws.com/centralpark/reservoir-l.jpg");
 //		instance.insertPhotoTable(4, "2014-1-4 16:23:01", "Seneca Village may possibly have been Manhattan's first stable community of African American property owners.", 40.782781, -73.970122, "https://s3-us-west-1.amazonaws.com/centralpark/seneca-village-l.jpg");
 //		instance.insertPhotoTable(8, "2014-4-27 14:31:09", "The Pond is one of Central Parks seven naturalistic water bodies. When Frederick Law Olmsted and Calvert Vaux designed Central Park, they imagined an immediate reprieve from the City's streets. ", 40.766109, -73.973985, "https://s3-us-west-1.amazonaws.com/centralpark/pond-l.jpg");
 //		instance.insertPhotoTable(9, "2014-5-31 18:32:12", "Although today the Park's largest lawn without ballfields features people it was originally the home to a flock of pure bred sheep from 1864 until 1934.", 40.772638, -73.975305, "https://s3-us-west-1.amazonaws.com/centralpark/sheep-meadow-l.jpg");
@@ -167,8 +167,8 @@ public class RdsLoader {
 //		instance.insertRatingsTable(10, 19, 5);
 //		instance.insertRatingsTable(11, 19, 5);
 //		instance.insertRatingsTable(11, 20, 5);
-		instance.generateCsvForRatings();
-		Recommender.recomender(1);
+//		instance.generateCsvForRatings();
+//		Recommender.recomender(1);
     }
     
     public void init() {
@@ -196,6 +196,7 @@ public class RdsLoader {
                     " PRIMARY KEY ( UserID ))";
             stmt.executeUpdate(sql);
             stmt.close();
+            conn.close();
             System.out.println("Finished creating table Users");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -210,6 +211,7 @@ public class RdsLoader {
             String sql = "DROP TABLE " + name;
             stmt.executeUpdate(sql);
             stmt.close();
+            conn.close();
             System.out.println("Finished deleting table");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -228,6 +230,7 @@ public class RdsLoader {
                     " VALUES ('"+inputEmail+"', '"+inputPassword+"', false, '"+nickName+"')";
     		stmt.executeUpdate(sql);
             stmt.close();
+            conn.close();
     	}
     	catch (SQLException e) {
             e.printStackTrace();
@@ -249,6 +252,7 @@ public class RdsLoader {
 
             stmt.executeUpdate(sql);
             stmt.close();
+            conn.close();
             System.out.println("Finished inserting into table");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -272,6 +276,7 @@ public class RdsLoader {
             }
             rs.close();
             stmt.close();
+            conn.close();
         } catch (Exception e) {
         	System.err.println("Reconnect to database.");
             e.printStackTrace();
@@ -292,6 +297,7 @@ public class RdsLoader {
         		String nickname = rs.getString("Nickname");
         		rs.close();
             	stmt.close();
+            	conn.close();
     			return new UserInfo(userID,email,password,faceBook,nickname);
             }
     	}catch (Exception e) {
@@ -320,6 +326,7 @@ public class RdsLoader {
     		System.out.println(sql);
     		stmt.executeUpdate(sql);
             stmt.close();
+            conn.close();
             System.out.println("Finished inserting into table");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -343,6 +350,7 @@ public class RdsLoader {
             		" FOREIGN KEY ( UserID ) REFERENCES Users(UserID))";
             stmt.executeUpdate(sql);
             stmt.close();
+            conn.close();
             System.out.println("Finished creating table Users");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -368,6 +376,7 @@ public class RdsLoader {
             }
             rs.close();
             stmt.close();
+            conn.close();
         } catch (Exception e) {
         	System.err.println("Reconnect to database.");
             e.printStackTrace();
@@ -415,6 +424,7 @@ public class RdsLoader {
             }
             rs.close();
             stmt.close();
+            conn.close();
     	} catch (Exception e) {
         	System.err.println("Reconnect to database.");
             e.printStackTrace();
@@ -438,6 +448,7 @@ public class RdsLoader {
             		" FOREIGN KEY ( PhotoID ) REFERENCES Photoes(PhotoID))";
             stmt.executeUpdate(sql);
             stmt.close();
+            conn.close();
             System.out.println("Finished creating table Users");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -452,6 +463,7 @@ public class RdsLoader {
     				"VALUES ("+userID+", "+photoID+", '"+comments+"', '"+date+"')";
     		stmt.executeUpdate(sql);
             stmt.close();
+            conn.close();
             System.out.println("Finished inserting into table");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -475,6 +487,7 @@ public class RdsLoader {
             }
             rs.close();
             stmt.close();
+            conn.close();
         } catch (Exception e) {
         	System.err.println("Reconnect to database.");
             e.printStackTrace();
@@ -501,6 +514,7 @@ public class RdsLoader {
             }
             rs.close();
             stmt.close();
+            conn.close();
         } catch (Exception e) {
         	System.err.println("Reconnect to database.");
             e.printStackTrace();
@@ -520,6 +534,7 @@ public class RdsLoader {
             }
             rs.close();
             stmt.close();
+            conn.close();
         } catch (Exception e) {
         	System.err.println("Reconnect to database.");
             e.printStackTrace();
@@ -544,6 +559,7 @@ public class RdsLoader {
             		" FOREIGN KEY ( PhotoID ) REFERENCES Photoes(PhotoID))";
             stmt.executeUpdate(sql);
             stmt.close();
+            conn.close();
             System.out.println("Finished creating table Users");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -566,6 +582,7 @@ public class RdsLoader {
             }
             rs.close();
             stmt.close();
+            conn.close();
         } catch (Exception e) {
         	System.err.println("Reconnect to database.");
             e.printStackTrace();
@@ -586,6 +603,7 @@ public class RdsLoader {
     		stmt = conn.createStatement();
     		stmt.executeUpdate(sql);
             stmt.close();
+            conn.close();
             System.out.println("Finished inserting into table");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -602,6 +620,7 @@ public class RdsLoader {
     			return rs.getInt("Rank");
     		}
             stmt.close();
+            conn.close();
             System.out.println("Finished inserting into table");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -621,6 +640,7 @@ public class RdsLoader {
     			return(formatter.format(res));
     		}
             stmt.close();
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -645,6 +665,7 @@ public class RdsLoader {
             stmt.close();
             fw.flush();
             fw.close();
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -661,6 +682,7 @@ public class RdsLoader {
     			return url;
     		}
             stmt.close();
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
