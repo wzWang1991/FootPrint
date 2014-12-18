@@ -400,19 +400,19 @@ public class RdsLoader {
     	switch (season) {
     	case "spring": 
     		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
-    				+ "Users U where (month(P.Date)>=2 and month(P.date)<=4) and U.UserID=P.UserID";
+    				+ "Users U where (month(P.Date)>=3 and month(P.date)<=5) and U.UserID=P.UserID";
     		break;
     	case "summer":
     		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
-    				+ "Users U where (month(P.Date)>=5 and month(P.Date)<=7) and U.UserID=P.UserID";
+    				+ "Users U where (month(P.Date)>=6 and month(P.Date)<=8) and U.UserID=P.UserID";
     		break;
     	case "autumn":
     		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
-    				+ "Users U where (month(P.Date)>=8 and month(P.Date)<=10) and U.UserID=P.UserID";
+    				+ "Users U where (month(P.Date)>=9 and month(P.Date)<=11) and U.UserID=P.UserID";
     		break;
     	case "winter":
     		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
-    				+ "Users U where (month(P.Date)>=11 or month(P.Date)<=1) and U.UserID=P.UserID";
+    				+ "Users U where (month(P.Date)>=12 or month(P.Date)<=2) and U.UserID=P.UserID";
     		break;
     	case "all":
     		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
