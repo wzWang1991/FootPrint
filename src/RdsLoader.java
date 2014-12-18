@@ -316,7 +316,7 @@ public class RdsLoader {
     	else return null;
     }
     
-    public void insertPhotoTable(int userID, String date, String des, double lat, double lon, String url) {
+    public int insertPhotoTable(int userID, String date, String des, double lat, double lon, String url) {
     	Statement stmt;
     	des = des.replace("'", "\\'");
     	try {
@@ -325,11 +325,19 @@ public class RdsLoader {
     				"VALUES ("+userID+", '"+date+"', '"+des+"', "+lat+", "+lon+", '"+url+"')";
     		System.out.println(sql);
     		stmt.executeUpdate(sql);
+    		sql = "SELECT LAST_INSERT_ID()";
+    		ResultSet rs = stmt.executeQuery(sql);
+    		int id = 0;
+    		while (rs.next()) {
+    			id = rs.getInt(1);
+    		}
             stmt.close();
             conn.close();
             System.out.println("Finished inserting into table");
+            return id;
         } catch (SQLException e) {
             e.printStackTrace();
+            return -1;
         } 
     }
     

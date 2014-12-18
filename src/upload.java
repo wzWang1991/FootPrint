@@ -19,6 +19,8 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import com.amazonaws.auth.PropertiesCredentials;
+
 /**
  * Servlet implementation class upload
  */
@@ -86,9 +88,16 @@ public class upload extends HttpServlet {
 	    		RdsLoader instance = RdsLoader.getInstance();
 	    		instance.init();
 	    		String url = "https://s3.amazonaws.com/edu.columbia.cloud.footprint/" + fileName;
-	    		instance.insertPhotoTable(Integer.parseInt(parameters.get("userId")), date, parameters.get("description"), Double.parseDouble(parameters.get("latitude")), Double.parseDouble(parameters.get("longitude")), url);
-	        	
+	    		int id = instance.insertPhotoTable(Integer.parseInt(parameters.get("userId")), date, parameters.get("description"), Double.parseDouble(parameters.get("latitude")), Double.parseDouble(parameters.get("longitude")), url);
+	        	System.out.println(id);
 	        	f.delete();
+	        	
+	        	
+	        	PropertiesCredentials propertiesCredentials = new PropertiesCredentials(Thread.currentThread().getContextClassLoader().getResourceAsStream("AwsCredentials.properties"));
+	        	Sqs sqs = new Sqs(propertiesCredentials);
+	        	String queueUrl = "https://sqs.us-east-1.amazonaws.com/846524277299/FootPrint";
+	        	String message = "{\"photoId\": " + id + ", \"url\": \""+ url +"\"}";
+	        	sqs.sendMessage(queueUrl, message);
 	        	out.println("success");
 		    } else
 		    	out.println("fail");
