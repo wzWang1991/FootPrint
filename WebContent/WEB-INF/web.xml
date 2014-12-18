@@ -109,4 +109,14 @@
     <servlet-name>RecommendationGetter</servlet-name>
     <url-pattern>/RecommendationGetter</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>upload</display-name>
+    <servlet-name>upload</servlet-name>
+    <servlet-class>upload</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>upload</servlet-name>
+    <url-pattern>/upload</url-pattern>
+  </servlet-mapping>
 </web-app>
