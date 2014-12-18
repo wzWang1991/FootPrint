@@ -119,4 +119,14 @@
     <servlet-name>upload</servlet-name>
     <url-pattern>/upload</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>PhotoPoster</display-name>
+    <servlet-name>PhotoPoster</servlet-name>
+    <servlet-class>PhotoPoster</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PhotoPoster</servlet-name>
+    <url-pattern>/PhotoPoster</url-pattern>
+  </servlet-mapping>
 </web-app>
