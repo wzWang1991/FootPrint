@@ -33,9 +33,17 @@ public class PhotoGetter extends HttpServlet {
 		Gson gson = new Gson();
 		response.setContentType("application/json"); 
 		String season = request.getParameter("season");
+		double lat1 = Double.parseDouble(request.getParameter("lat1"));
+		double lat2 = Double.parseDouble(request.getParameter("lat2"));
+		double lng1 = Double.parseDouble(request.getParameter("lng1"));
+		double lng2 = Double.parseDouble(request.getParameter("lng2"));
+		double latBegin = Math.min(lat1, lat2);
+		double latEnd = Math.max(lat1, lat2);
+		double lngBegin = Math.min(lng1, lng2);
+		double lngEnd = Math.max(lng1, lng2);
 		RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
-		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation(season, 0, 0, 0, 0);
+		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation(season, latBegin, latEnd, lngBegin, lngEnd);
 		PrintWriter out=response.getWriter();
 		String ans=gson.toJson(res);
 		out.println(ans);

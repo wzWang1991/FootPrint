@@ -62,14 +62,14 @@ public class RdsLoader {
 //		instance.selectAllPhotoes();
 //		instance.insertPhotoTable(2, "2014-9-10 12:12:12", "really good", 12.12, 23.23, "https://s3.amazonaws.com/footprint.linhuang/cen.jpeg");
 //		instance.selectAllPhotoes();
-//		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation("all", 0, 0, 0, 0);
-//		System.out.println(res.size());
-//		for (int i = 0; i <res.size(); i++) {
-//			System.out.println(res.get(i).title);
-//			System.out.println(res.get(i).date);
-//			System.out.println(res.get(i).content);
-//			System.out.println(res.get(i).images.get(0));
-//		}
+		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation("winter", 40, 42, -74, -72);
+		System.out.println(res.size());
+		for (int i = 0; i <res.size(); i++) {
+			System.out.println(res.get(i).title);
+			System.out.println(res.get(i).date);
+			System.out.println(res.get(i).content);
+			System.out.println(res.get(i).images.get(0));
+		}
 //		instance.insertPhotoTable(2, "2014-12-10 12:10:10", "it is too cold, but I love it!!! Fantastic!!", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter.jpg");
 //		instance.insertPhotoTable(1, "2014-11-10 23:08:31", "Bright Buildings !!!!!!!!!!! I will never leave NYC!!!!", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter1.jpg");
 //		instance.insertPhotoTable(2, "2014-11-13 04:02:21", "Hey, Hey, my girlfriend is pretty, right?~~", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter2.jpg");
@@ -104,7 +104,7 @@ public class RdsLoader {
 //		instance.createRatingTable();
 //		instance.insertRatingsTable(1, 6, 5);
 //		instance.insertRatingsTable(2, 7, 5);
-		instance.selectAllRatings();
+//		instance.selectAllRatings();
 //		System.out.println(instance.selectOneRating(1, 6));
 //		instance.insertRatingsTable(1, 6, 3);
 //		System.out.println(instance.selectOneRating(3, 6));
@@ -396,27 +396,29 @@ public class RdsLoader {
     	season = season.toLowerCase();
     	List<PhotoInfo> res = new ArrayList<PhotoInfo> ();
     	String sql = "";
+    	String sql1 = " and P.Lat>="+latBegin+" and P.Lat<="+latEnd+" and P.Lon>="+lonBegin+" and P.Lon<="+lonEnd;
     	switch (season) {
     	case "spring": 
-    		sql = "select U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
+    		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
     				+ "Users U where (month(P.Date)>=2 and month(P.date)<=4) and U.UserID=P.UserID";
     		break;
     	case "summer":
-    		sql = "select U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
+    		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
     				+ "Users U where (month(P.Date)>=5 and month(P.Date)<=7) and U.UserID=P.UserID";
     		break;
     	case "autumn":
-    		sql = "select U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
+    		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
     				+ "Users U where (month(P.Date)>=8 and month(P.Date)<=10) and U.UserID=P.UserID";
     		break;
     	case "winter":
-    		sql = "select U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
+    		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
     				+ "Users U where (month(P.Date)>=11 or month(P.Date)<=1) and U.UserID=P.UserID";
     		break;
     	case "all":
-    		sql = "select U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
+    		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
     				+ "Users U where U.UserID=P.UserID";
     	}
+    	sql = sql + sql1;
     	System.out.println(sql);
     	Statement stmt;
     	try {
@@ -428,7 +430,9 @@ public class RdsLoader {
                 String date = rs.getString("Date");
                 String des = rs.getString("Des");
                 String url = rs.getString("URL");
-                res.add(new PhotoInfo(photoId, date, userName, des, url));
+                double lat = rs.getDouble("Lat");
+                double lon = rs.getDouble("Lon");
+                res.add(new PhotoInfo(photoId, date, userName, des, url, lat, lon));
             }
             rs.close();
             stmt.close();
