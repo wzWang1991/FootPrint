@@ -9,9 +9,11 @@ public class PhotoInfo {
 	public String dateFormat;
 	public String title;
 	public String content;
+	public double latitude;
+	public double longitude;
 	public List<String> images;
 	
-	public PhotoInfo(int photoId, String date, String title, String content, String image) {
+	public PhotoInfo(int photoId, String date, String title, String content, String image, double latitude, double longitude) {
 		this.photoId = photoId;
 		this.type = "blog_post";
 		this.date = date;
@@ -20,5 +22,7 @@ public class PhotoInfo {
 		this.content = content;
 		this.images = new LinkedList<>();
 		this.images.add(image);
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 }

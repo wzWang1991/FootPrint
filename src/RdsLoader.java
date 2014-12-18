@@ -104,12 +104,12 @@ public class RdsLoader {
 //		instance.createRatingTable();
 //		instance.insertRatingsTable(1, 6, 5);
 //		instance.insertRatingsTable(2, 7, 5);
-//		instance.selectAllRatings();
+		instance.selectAllRatings();
 //		System.out.println(instance.selectOneRating(1, 6));
 //		instance.insertRatingsTable(1, 6, 3);
 //		System.out.println(instance.selectOneRating(3, 6));
 //		instance.insertPhotoTable(2, "2013-6-10 02:08:20", "This stone memorial sits at the Park's Fifth Avenue perimeter wall. It features an engraved profile of the renowned American newspaper editor for which it was named and an adjacent curved granite bench.", 40.791814, -73.953171, "https://s3-us-west-1.amazonaws.com/centralpark/arthur-brisbane-l.jpg");
-		instance.insertPhotoTable(3, "2014-2-18 17:23:41", "One of the Park's most picturesque landscapes, the reservoir is 40 feet deep and holds a billion gallons of water. ", 40.784962, -73.963374, "https://s3-us-west-1.amazonaws.com/centralpark/reservoir-l.jpg");
+//		instance.insertPhotoTable(3, "2014-2-18 17:23:41", "One of the Park's most picturesque landscapes, the reservoir is 40 feet deep and holds a billion gallons of water. ", 40.784962, -73.963374, "https://s3-us-west-1.amazonaws.com/centralpark/reservoir-l.jpg");
 //		instance.insertPhotoTable(4, "2014-1-4 16:23:01", "Seneca Village may possibly have been Manhattan's first stable community of African American property owners.", 40.782781, -73.970122, "https://s3-us-west-1.amazonaws.com/centralpark/seneca-village-l.jpg");
 //		instance.insertPhotoTable(8, "2014-4-27 14:31:09", "The Pond is one of Central Parks seven naturalistic water bodies. When Frederick Law Olmsted and Calvert Vaux designed Central Park, they imagined an immediate reprieve from the City's streets. ", 40.766109, -73.973985, "https://s3-us-west-1.amazonaws.com/centralpark/pond-l.jpg");
 //		instance.insertPhotoTable(9, "2014-5-31 18:32:12", "Although today the Park's largest lawn without ballfields features people it was originally the home to a flock of pure bred sheep from 1864 until 1934.", 40.772638, -73.975305, "https://s3-us-west-1.amazonaws.com/centralpark/sheep-meadow-l.jpg");
