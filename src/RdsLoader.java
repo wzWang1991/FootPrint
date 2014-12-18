@@ -522,7 +522,6 @@ public class RdsLoader {
             }
             rs.close();
             stmt.close();
-            conn.close();
         } catch (Exception e) {
         	System.err.println("Reconnect to database.");
             e.printStackTrace();
@@ -542,7 +541,6 @@ public class RdsLoader {
             }
             rs.close();
             stmt.close();
-            conn.close();
         } catch (Exception e) {
         	System.err.println("Reconnect to database.");
             e.printStackTrace();
@@ -628,7 +626,6 @@ public class RdsLoader {
     			return rs.getInt("Rank");
     		}
             stmt.close();
-            conn.close();
             System.out.println("Finished inserting into table");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -636,7 +633,7 @@ public class RdsLoader {
     	return 0;
     }
     
-    public String calculateAvgRank (int photoId) {
+    private String calculateAvgRank (int photoId) {
     	NumberFormat formatter = new DecimalFormat("#0.0");     
     	Statement stmt;
     	try {
