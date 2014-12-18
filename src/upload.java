@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -78,6 +79,15 @@ public class upload extends HttpServlet {
 		    	Files.copy(fileInput, f.toPath());
 		    	S3.uploadFile(f, fileName);
 	        	System.out.println(f.getAbsolutePath());
+	        	
+	        	SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	        	String date = sDateFormat.format(new java.util.Date()); 
+	    	
+	    		RdsLoader instance = RdsLoader.getInstance();
+	    		instance.init();
+	    		String url = "https://s3.amazonaws.com/edu.columbia.cloud.footprint/" + fileName;
+	    		instance.insertPhotoTable(Integer.parseInt(parameters.get("userId")), date, parameters.get("description"), Double.parseDouble(parameters.get("latitude")), Double.parseDouble(parameters.get("longitude")), url);
+	        	
 	        	f.delete();
 	        	out.println("success");
 		    } else
