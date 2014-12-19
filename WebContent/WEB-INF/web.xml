@@ -129,4 +129,14 @@
     <servlet-name>PhotoPoster</servlet-name>
     <url-pattern>/PhotoPoster</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UserRegister</display-name>
+    <servlet-name>UserRegister</servlet-name>
+    <servlet-class>UserRegister</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserRegister</servlet-name>
+    <url-pattern>/UserRegister</url-pattern>
+  </servlet-mapping>
 </web-app>

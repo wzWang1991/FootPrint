@@ -54,7 +54,7 @@ public class RdsLoader {
     public static void main(String[] args) throws IOException, TasteException {
     	RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
-//		instance.selectAll("Users");
+		instance.selectAll("Users");
 //		instance.insert("Users");
 //		instance.deleteTable("Comments");
 //		instance.deleteTable("Photoes");
@@ -62,14 +62,14 @@ public class RdsLoader {
 //		instance.selectAllPhotoes();
 //		instance.insertPhotoTable(2, "2014-9-10 12:12:12", "really good", 12.12, 23.23, "https://s3.amazonaws.com/footprint.linhuang/cen.jpeg");
 //		instance.selectAllPhotoes();
-		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation("winter", 40, 42, -74, -72);
-		System.out.println(res.size());
-		for (int i = 0; i <res.size(); i++) {
-			System.out.println(res.get(i).title);
-			System.out.println(res.get(i).date);
-			System.out.println(res.get(i).content);
-			System.out.println(res.get(i).images.get(0));
-		}
+//		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation("winter", 40, 42, -74, -72);
+//		System.out.println(res.size());
+//		for (int i = 0; i <res.size(); i++) {
+//			System.out.println(res.get(i).title);
+//			System.out.println(res.get(i).date);
+//			System.out.println(res.get(i).content);
+//			System.out.println(res.get(i).images.get(0));
+//		}
 //		instance.insertPhotoTable(2, "2014-12-10 12:10:10", "it is too cold, but I love it!!! Fantastic!!", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter.jpg");
 //		instance.insertPhotoTable(1, "2014-11-10 23:08:31", "Bright Buildings !!!!!!!!!!! I will never leave NYC!!!!", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter1.jpg");
 //		instance.insertPhotoTable(2, "2014-11-13 04:02:21", "Hey, Hey, my girlfriend is pretty, right?~~", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter2.jpg");
@@ -220,6 +220,8 @@ public class RdsLoader {
     
     public boolean registerNewUser(String inputEmail, String inputPassword, String nickName) {
     	System.out.println("Rigerster new User "+inputEmail);
+    	if (inputEmail == null || inputEmail.length() == 0)
+    		return false;
     	UserInfo user=selectUser(inputEmail);
     	if (user!=null)
     		return false;
@@ -297,7 +299,6 @@ public class RdsLoader {
         		String nickname = rs.getString("Nickname");
         		rs.close();
             	stmt.close();
-            	conn.close();
     			return new UserInfo(userID,email,password,faceBook,nickname);
             }
     	}catch (Exception e) {
