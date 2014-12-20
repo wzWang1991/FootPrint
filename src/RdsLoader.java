@@ -54,8 +54,7 @@ public class RdsLoader {
     public static void main(String[] args) throws IOException, TasteException {
     	RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
-		instance.selectAll("Users");
-//		instance.insert("Users");
+		instance.insertPhotoTable(9,"2014-7-30 19:00:45","I have never seen this sunset before!",40.693788, -74.047483,"https://s3.amazonaws.com/edu.columbia.cloud.footprint/StatueofLiberty/2.jpg");//		instance.insert("Users");
 //		instance.deleteTable("Comments");
 //		instance.deleteTable("Photoes");
 //		instance.createPhotoTable();
