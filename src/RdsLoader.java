@@ -54,7 +54,7 @@ public class RdsLoader {
     public static void main(String[] args) throws IOException, TasteException {
     	RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
-		instance.selectAll("Users");
+//		instance.selectAll("Users");
 //		instance.insert("Users");
 //		instance.deleteTable("Comments");
 //		instance.deleteTable("Photoes");
@@ -89,6 +89,7 @@ public class RdsLoader {
 //		instance.insertCommentsTable(1, 8, "how lovely this bridge is!", "2014-12-13 10:31:16");
 //		instance.insertCommentsTable(2, 8, "Fantanstic!!!!!!!!!!!!!!!!", "2014-12-14 21:52:01");
 //		instance.selectAllComments();
+//		instance.addNewColumnToComments();
 //		Photo P = instance.selectOnePhoto(6,3);
 //		System.out.println(P.content);
 //		for (int i = 0; i < P.similarPhotos.size(); i++) {
@@ -400,23 +401,23 @@ public class RdsLoader {
     	String sql1 = " and P.Lat>="+latBegin+" and P.Lat<="+latEnd+" and P.Lon>="+lonBegin+" and P.Lon<="+lonEnd;
     	switch (season) {
     	case "spring": 
-    		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
+    		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, DATE_FORMAT(P.Date, '%Y-%m-%d %h:%i:%s') as Date, P.Des, P.url from Photoes P, "
     				+ "Users U where (month(P.Date)>=3 and month(P.date)<=5) and U.UserID=P.UserID";
     		break;
     	case "summer":
-    		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
+    		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, DATE_FORMAT(P.Date, '%Y-%m-%d %h:%i:%s') as Date, P.Des, P.url from Photoes P, "
     				+ "Users U where (month(P.Date)>=6 and month(P.Date)<=8) and U.UserID=P.UserID";
     		break;
     	case "autumn":
-    		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
+    		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, DATE_FORMAT(P.Date, '%Y-%m-%d %h:%i:%s') as Date, P.Des, P.url from Photoes P, "
     				+ "Users U where (month(P.Date)>=9 and month(P.Date)<=11) and U.UserID=P.UserID";
     		break;
     	case "winter":
-    		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
+    		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, DATE_FORMAT(P.Date, '%Y-%m-%d %h:%i:%s') as Date, P.Des, P.url from Photoes P, "
     				+ "Users U where (month(P.Date)>=12 or month(P.Date)<=2) and U.UserID=P.UserID";
     		break;
     	case "all":
-    		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, P.Date, P.Des, P.url from Photoes P, "
+    		sql = "select P.Lat, P.Lon, U.Nickname, P.PhotoID, DATE_FORMAT(P.Date, '%Y-%m-%d %h:%i:%s') as Date, P.Des, P.url from Photoes P, "
     				+ "Users U where U.UserID=P.UserID";
     	}
     	sql = sql + sql1;
@@ -495,8 +496,9 @@ public class RdsLoader {
                 int userId = rs.getInt("UserID");
                 String comments = rs.getString("Comments");
                 String date = rs.getString("Date");
+                double sentiment = rs.getDouble("Sentiment");
                 System.out.println("CommentsId:"+commentsId+" photoId:"+photoId+" userId:"+userId+
-                		" Comments:"+comments+" date:"+date);
+                		" Comments:"+comments+" date:"+date+" sentiment:"+sentiment);
             }
             rs.close();
             stmt.close();
@@ -508,7 +510,7 @@ public class RdsLoader {
     } 
     
     public Photo selectOnePhoto(int photoID, int userID) {
-    	String sql = "Select P.Date, P.Des, P.url, U.Nickname from Photoes P, Users U where P.PhotoID="+photoID+
+    	String sql = "Select DATE_FORMAT(P.Date, '%Y-%m-%d %h:%i:%s') as Date, P.Des, P.url, U.Nickname from Photoes P, Users U where P.PhotoID="+photoID+
     			" and U.UserID=P.UserID";
     	String userName = "";
     	String date = "";
@@ -686,7 +688,7 @@ public class RdsLoader {
     	String[] res = new String[4];
     	try {
     		stmt = conn.createStatement();
-    		String sql = "select U.Nickname, P.Date, P.Des, P.URL from Photoes P, Users U where PhotoID="+photoId+
+    		String sql = "select U.Nickname, DATE_FORMAT(P.Date, '%Y-%m-%d %h:%i:%s') as Date, P.Des, P.URL from Photoes P, Users U where PhotoID="+photoId+
     				" and P.UserID=U.UserID";
     		ResultSet rs = stmt.executeQuery(sql);
     		while(rs.next()){
@@ -702,5 +704,19 @@ public class RdsLoader {
             e.printStackTrace();
         }
     	return null;
+    }
+    
+    public void addNewColumnToComments() {
+        Statement stmt;
+        try {
+            stmt = conn.createStatement();
+            String sql = "ALTER TABLE Comments ADD COLUMN Sentiment DOUBLE DEFAULT 0";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            conn.close();
+            System.out.println("Finished adding new column to table Comments");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
