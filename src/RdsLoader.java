@@ -680,21 +680,26 @@ public class RdsLoader {
         }
     }
     
-    public String getPhotoUrl(int photoId) {
+    public String[] selectOnePhoto(int photoId) {
     	Statement stmt;
+    	String[] res = new String[4];
     	try {
     		stmt = conn.createStatement();
-    		String sql = "select URL from Photoes where PhotoID="+photoId;
+    		String sql = "select U.Nickname, P.Date, P.Des, P.URL from Photoes P, Users U where PhotoID="+photoId+
+    				" and P.UserID=U.UserID";
     		ResultSet rs = stmt.executeQuery(sql);
     		while(rs.next()){
-    			String url = String.valueOf(rs.getString("URL"));
-    			return url;
+    			res[0] = rs.getString("URL");
+    			res[1] = rs.getString("Date");
+    			res[2] = rs.getString("Nickname");
+    			res[3] = rs.getString("Des");
+    			return res;
     		}
             stmt.close();
             conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    	return "";
+    	return null;
     }
 }

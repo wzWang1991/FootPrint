@@ -21,10 +21,10 @@ public class Photo {
 		this.title = title;
 		this.content = content;
 		this.similarPhotos = new LinkedList<SimilarPhoto>();
-		this.similarPhotos.add(new SimilarPhoto(8,"https://s3.amazonaws.com/footprint.linhuang/winter.jpg"));
-		this.similarPhotos.add(new SimilarPhoto(5,"https://s3.amazonaws.com/footprint.linhuang/winter1.jpg"));
-		this.similarPhotos.add(new SimilarPhoto(6,"https://s3.amazonaws.com/footprint.linhuang/winter2.jpg"));
-		this.similarPhotos.add(new SimilarPhoto(7,"https://s3.amazonaws.com/footprint.linhuang/winter3.jpg"));
+		this.similarPhotos.add(new SimilarPhoto(8,"https://s3.amazonaws.com/footprint.linhuang/winter.jpg","1","1","1","1"));
+		this.similarPhotos.add(new SimilarPhoto(5,"https://s3.amazonaws.com/footprint.linhuang/winter1.jpg","1","1","1","1"));
+		this.similarPhotos.add(new SimilarPhoto(6,"https://s3.amazonaws.com/footprint.linhuang/winter2.jpg","1","1","1","1"));
+		this.similarPhotos.add(new SimilarPhoto(7,"https://s3.amazonaws.com/footprint.linhuang/winter3.jpg","1","1","1","1"));
 		this.comments = comments;
 		this.rating = rating;
 		this.avgRank = avgRank;

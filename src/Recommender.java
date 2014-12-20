@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 public class Recommender {
 	public static List<SimilarPhoto> recomender(int userId) throws TasteException, IOException {
+		NumberFormat formatter = new DecimalFormat("#0.0"); 
 		RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
 		List<SimilarPhoto> res = new ArrayList<SimilarPhoto>();
@@ -26,8 +29,9 @@ public class Recommender {
         List<RecommendedItem> recommendations=recommender.recommend(userId,10);
         for(RecommendedItem recommendation:recommendations) {
         	int photoId = (int) recommendation.getItemID();
-        	String url = instance.getPhotoUrl(photoId);
-        	res.add(new SimilarPhoto(photoId, url));
+        	String recommendValue = formatter.format(recommendation.getValue());
+        	String[] photoInfo = instance.selectOnePhoto(photoId);
+        	res.add(new SimilarPhoto(photoId, photoInfo[0], recommendValue, photoInfo[1], photoInfo[2], photoInfo[3]));
         }
 		return res;
 	}
