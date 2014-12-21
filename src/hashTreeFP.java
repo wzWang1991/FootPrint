@@ -54,12 +54,12 @@ public class hashTreeFP{
 		ht.initDB();
 		
 		// input id: 5
-		String[] close = ht.findFourClosest(5);
-		for(String s: close){
-			System.out.println(s);
+		SimilarPhoto[] close = ht.findFourClosest(5);
+		for(SimilarPhoto s: close){
+			System.out.println(s.url);
 		}
 		
-//		ht.addHashColumn();
+//		ht.selectAll();
 		ht.close();
     }
     
@@ -151,10 +151,12 @@ public class hashTreeFP{
     class SimilarPhoto{
     	int id;
     	int diff;
+    	String url;
     	
-    	SimilarPhoto(int id, int diff){
+    	SimilarPhoto(int id, int diff, String url){
     		this.id = id;
     		this.diff = diff;
+    		this.url = url;
     	}
     }
     
@@ -171,8 +173,8 @@ public class hashTreeFP{
     	
     }
     
-    public String[] findFourClosest(int target){
-    	String[] ret = new String[4];
+    public SimilarPhoto[] findFourClosest(int target){
+    	SimilarPhoto[] ret = new SimilarPhoto[4];
     	PriorityQueue<SimilarPhoto> queue = new PriorityQueue<SimilarPhoto>(4, new PhotoComparator());
  
     	String targetHash = getHash(target);
@@ -194,9 +196,10 @@ public class hashTreeFP{
             	
                 String value = rs.getString("hash");
                 if(value==null) continue;
-                
+
+                String url = rs.getString("URL");
                 int diff = getDiff(target, id, targetHash, value);
-                SimilarPhoto sp = new SimilarPhoto(id, diff);
+                SimilarPhoto sp = new SimilarPhoto(id, diff, url);
                 queue.add(sp);
             }
 
@@ -210,8 +213,8 @@ public class hashTreeFP{
 
         while(!queue.isEmpty()){
         	SimilarPhoto sp = queue.remove();
-        	ret[i] = Integer.toString(sp.id);
-        	System.out.println("id : "+sp.id + " diff: "+ sp.diff);
+        	ret[i] = sp;
+        	System.out.println("id : "+sp.id + " diff: "+ sp.diff + " url: " + sp.url);
         	i++;
         	if(i>=4) break; 
         }
