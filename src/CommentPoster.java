@@ -16,7 +16,7 @@ import com.google.gson.Gson;
  */
 public class CommentPoster extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String queueUrl = "https://sqs.us-east-1.amazonaws.com/846524277299/FootPrint";
+	private static final String queueUrl = "https://sqs.us-east-1.amazonaws.com/846524277299/FootPrint-Comment";
 	private static Gson gson = new Gson();
        
     /**
