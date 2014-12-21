@@ -13,7 +13,7 @@ import MySQLdb
 def main():
 	conn = boto.sqs.connect_to_region("us-east-1")
 
-	queue_url = "https://sqs.us-east-1.amazonaws.com/452649417432/awseb-e-tmrnmgpqzh-stack-NewSignupQueue-MN33H2HK79KL"
+	queue_url = "https://sqs.us-east-1.amazonaws.com/846524277299/FootPrint"
 
 	q = Queue(conn, queue_url)
 
@@ -35,11 +35,9 @@ def main():
 				cnx = MySQLdb.connect(user='FPDatabase', passwd = 'cloudcomwyhq', host = 'footprint.cgr7pyr447yn.us-east-1.rds.amazonaws.com', db='FPDatabase')
 				cursor = cnx.cursor()
 				
-				add_hash = ("INSERT IGNORE INTO Photoes"
-					"(PhotoID, hash) "
-					"VALUES (%s, %s)")
-
-				data_hash = (photoid, hash_value)
+				add_hash = ("UPDATE Photoes SET hash = %s WHERE PhotoID = %s")
+                    
+				data_hash = (hash_value, photoid)
 
 				cursor.execute(add_hash, data_hash)
 				cnx.commit()
