@@ -20,7 +20,6 @@ public class Recommender {
 	public static List<SimilarPhoto> recomender(int userId) throws TasteException, IOException {
 		NumberFormat formatter = new DecimalFormat("#0.0"); 
 		RdsLoader instance = RdsLoader.getInstance();
-		instance.init();
 		List<SimilarPhoto> res = new ArrayList<SimilarPhoto>();
 		DataModel model=new FileDataModel(new File("ratings.csv"));
         UserSimilarity similarity =new EuclideanDistanceSimilarity(model);
@@ -30,8 +29,10 @@ public class Recommender {
         for(RecommendedItem recommendation:recommendations) {
         	int photoId = (int) recommendation.getItemID();
         	String recommendValue = formatter.format(recommendation.getValue());
+        	instance.init();
         	String[] photoInfo = instance.selectOnePhoto(photoId);
-        	res.add(new SimilarPhoto(photoId, photoInfo[0], recommendValue, photoInfo[1], photoInfo[2], photoInfo[3]));
+        	if (photoInfo != null)
+        		res.add(new SimilarPhoto(photoId, photoInfo[0], recommendValue, photoInfo[1], photoInfo[2], photoInfo[3], photoInfo[4]));
         }
 		return res;
 	}
