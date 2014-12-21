@@ -14,17 +14,20 @@ public class Photo {
 	public String avgRank;
 	
 	public Photo(String date, String title, String content, String url, List<String> urls, List<Comment> comments,
-			int rating, String avgRank) {
+			int rating, String avgRank, int photoId) {
 		this.url = url;
 		this.date = date;
 		this.dateFormat = "D/MM/YY h:mm A";
 		this.title = title;
 		this.content = content;
+		hashTreeFP hashTree = hashTreeFP.getInstance();
+		hashTree.initDB();
+		hashTreeFP.SimilarPhotoWithDiff[] similarphotos = hashTree.findFourClosest(photoId);
 		this.similarPhotos = new LinkedList<SimilarPhoto>();
-		this.similarPhotos.add(new SimilarPhoto(8,"https://s3.amazonaws.com/footprint.linhuang/winter.jpg","1","1","1","1"));
-		this.similarPhotos.add(new SimilarPhoto(5,"https://s3.amazonaws.com/footprint.linhuang/winter1.jpg","1","1","1","1"));
-		this.similarPhotos.add(new SimilarPhoto(6,"https://s3.amazonaws.com/footprint.linhuang/winter2.jpg","1","1","1","1"));
-		this.similarPhotos.add(new SimilarPhoto(7,"https://s3.amazonaws.com/footprint.linhuang/winter3.jpg","1","1","1","1"));
+		for (int i = 0; i < similarphotos.length; i++) {
+			this.similarPhotos.add(new SimilarPhoto(similarphotos[i].id, similarphotos[i].url,"1","1","1","1"));
+		}
+
 		this.comments = comments;
 		this.rating = rating;
 		this.avgRank = avgRank;

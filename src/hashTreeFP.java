@@ -54,8 +54,8 @@ public class hashTreeFP{
 		ht.initDB();
 		
 		// input id: 5
-		SimilarPhoto[] close = ht.findFourClosest(5);
-		for(SimilarPhoto s: close){
+		SimilarPhotoWithDiff[] close = ht.findFourClosest(5);
+		for(SimilarPhotoWithDiff s: close){
 			System.out.println(s.url);
 		}
 		
@@ -148,22 +148,22 @@ public class hashTreeFP{
 		return counter;
     }
     
-    class SimilarPhoto{
+    public class SimilarPhotoWithDiff{
     	int id;
     	int diff;
     	String url;
     	
-    	SimilarPhoto(int id, int diff, String url){
+    	SimilarPhotoWithDiff(int id, int diff, String url){
     		this.id = id;
     		this.diff = diff;
     		this.url = url;
     	}
     }
     
-    class PhotoComparator implements Comparator<SimilarPhoto>{
+    class PhotoComparator implements Comparator<SimilarPhotoWithDiff>{
 
 		@Override
-		public int compare(SimilarPhoto o1, SimilarPhoto o2) {
+		public int compare(SimilarPhotoWithDiff o1, SimilarPhotoWithDiff o2) {
 			if(o1.diff < o2.diff)
 				return -1;
 			else if(o1.diff > o2.diff)
@@ -173,9 +173,9 @@ public class hashTreeFP{
     	
     }
     
-    public SimilarPhoto[] findFourClosest(int target){
-    	SimilarPhoto[] ret = new SimilarPhoto[4];
-    	PriorityQueue<SimilarPhoto> queue = new PriorityQueue<SimilarPhoto>(4, new PhotoComparator());
+    public SimilarPhotoWithDiff[] findFourClosest(int target){
+    	SimilarPhotoWithDiff[] ret = new SimilarPhotoWithDiff[4];
+    	PriorityQueue<SimilarPhotoWithDiff> queue = new PriorityQueue<SimilarPhotoWithDiff>(4, new PhotoComparator());
  
     	String targetHash = getHash(target);
     	if(targetHash==null) {
@@ -199,7 +199,7 @@ public class hashTreeFP{
 
                 String url = rs.getString("URL");
                 int diff = getDiff(target, id, targetHash, value);
-                SimilarPhoto sp = new SimilarPhoto(id, diff, url);
+                SimilarPhotoWithDiff sp = new SimilarPhotoWithDiff(id, diff, url);
                 queue.add(sp);
             }
 
@@ -212,7 +212,7 @@ public class hashTreeFP{
         int i = 0;
 
         while(!queue.isEmpty()){
-        	SimilarPhoto sp = queue.remove();
+        	SimilarPhotoWithDiff sp = queue.remove();
         	ret[i] = sp;
         	System.out.println("id : "+sp.id + " diff: "+ sp.diff + " url: " + sp.url);
         	i++;

@@ -21,6 +21,8 @@ import java.util.List;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 
+import com.amazonaws.auth.PropertiesCredentials;
+
 public class RdsLoader {
 	
 	final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -55,8 +57,7 @@ public class RdsLoader {
     public static void main(String[] args) throws IOException, TasteException {
     	RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
-		instance.createDescriptionFile();
-		instance.updatePhotoPlace();
+		instance.selectAll("Users");
 		
     }
     
@@ -89,6 +90,32 @@ public class RdsLoader {
                 System.out.println("origId:"+origId+"  duplId:"+duplId);
             }
             for (int i : duplicateIds) {
+            	sql = "DELETE from Photoes where PhotoID = " + i;
+            	stmt.executeUpdate(sql);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+        	System.err.println("Reconnect to database.");
+            e.printStackTrace();
+        }
+    }
+    
+    public void deleteTestPhoto() {
+    	String sql = "SELECT PhotoID, URL from Photoes where URL like '%edu.columbia.cloud.footprint/1%'";
+    	Statement stmt;
+    	List<Integer> deleteId = new LinkedList<>();
+    	try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+            	int duplId = rs.getInt("PhotoID");
+            	String url = rs.getString("URL");
+            	deleteId.add(duplId);
+                System.out.println("origId:"+duplId+"  url:"+url);
+            }
+            for (int i : deleteId) {
             	sql = "DELETE from Photoes where PhotoID = " + i;
             	stmt.executeUpdate(sql);
             }
@@ -432,8 +459,42 @@ public class RdsLoader {
                 double lat = rs.getDouble("Lat");
                 double lon = rs.getDouble("Lon");
                 String url = rs.getString("url");
+                String hash = rs.getString("hash");
                 System.out.println("photoId:"+photoId+" userId:"+userId+" date:"+date+
-                		" res:"+res+" lat:"+lat+" lon:"+lon+" url:"+url);
+                		" res:"+res+" lat:"+lat+" lon:"+lon+" url:"+url+" hash:"+hash);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+        	System.err.println("Reconnect to database.");
+            e.printStackTrace();
+        }
+    }
+    
+    public void pushPhotoToQueue() {
+    	String sql = "SELECT * FROM Photoes";
+    	Statement stmt;
+    	
+    	try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                int photoId = rs.getInt("PhotoID");
+                int userId = rs.getInt("UserID");
+                String date = rs.getString("Date");
+                String res = rs.getString("Des");
+                double lat = rs.getDouble("Lat");
+                double lon = rs.getDouble("Lon");
+                String url = rs.getString("url");
+                String hash = rs.getString("hash");
+                
+                String message = "{\"photoId\": " + photoId + ", \"url\": \""+ url +"\"}";
+                System.out.println(message);
+                PropertiesCredentials propertiesCredentials = new PropertiesCredentials(Thread.currentThread().getContextClassLoader().getResourceAsStream("AwsCredentials.properties"));
+	        	Sqs sqs = new Sqs(propertiesCredentials);
+	        	String queueUrl = "https://sqs.us-east-1.amazonaws.com/846524277299/FootPrint";
+	        	sqs.sendMessage(queueUrl, message);
             }
             rs.close();
             stmt.close();
@@ -613,7 +674,7 @@ public class RdsLoader {
         }
     	int rating = selectOneRating(userID, photoID);
     	String avgRank = calculateAvgRank(photoID);
-    	return new Photo(date, userName, des, url, null, comments, rating, avgRank);
+    	return new Photo(date, userName, des, url, null, comments, rating, avgRank, photoID);
     }
     
     public void createRatingTable () {
@@ -651,6 +712,26 @@ public class RdsLoader {
                 int rank = rs.getInt("Rank");
                 System.out.println("RatingsId:"+ratingsId+" photoId:"+photoId+" userId:"+userId+
                 		" Rank:"+rank);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+        	System.err.println("Reconnect to database.");
+            e.printStackTrace();
+        }
+    }
+    
+    public void selectAllInplace() {
+    	String sql = "SELECT * FROM InPlace";
+    	Statement stmt;
+    	try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+            	int photoId = rs.getInt("PhotoId");
+                int placeId = rs.getInt("PlaceId");
+                System.out.println("photoId:"+photoId+" placeId:"+placeId);
             }
             rs.close();
             stmt.close();
