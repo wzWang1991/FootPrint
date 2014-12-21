@@ -54,6 +54,8 @@ public class RdsLoader {
     public static void main(String[] args) throws IOException, TasteException {
     	RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
+		instance.createDescriptionFile();
+//		instance.addNewColumnToComments();
 //		instance.selectAll("Users");
 //		instance.insert("Users");
 //		instance.deleteTable("Comments");
@@ -710,13 +712,72 @@ public class RdsLoader {
         Statement stmt;
         try {
             stmt = conn.createStatement();
-            String sql = "ALTER TABLE Comments ADD COLUMN Sentiment DOUBLE DEFAULT 0";
-            stmt.executeUpdate(sql);
+            String sql = "Select * from Photoes order by Date";
+            ResultSet rs = stmt.executeQuery(sql);
+    		while(rs.next()){
+    			String url = rs.getString("URL");
+    			String photoId = rs.getString("PhotoId");
+    			System.out.println("url"+url+" photoId:"+photoId);
+    		}
             stmt.close();
             conn.close();
             System.out.println("Finished adding new column to table Comments");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void createDescriptionFile() throws IOException {
+    	Statement stmt;
+    	String prefix = "reuters-out/reut2-000.sgm-";
+    	int tmp = 0;
+        try {
+            stmt = conn.createStatement();
+            String sql = "Select * from Photoes";
+            ResultSet rs = stmt.executeQuery(sql);
+    		while(rs.next()){
+    			String description = rs.getString("Des");
+    			String filename = prefix + tmp + ".txt";
+    			tmp++;
+    			System.out.println(filename);
+    			FileWriter fw = new FileWriter(filename);
+    			fw.write(description);
+    			fw.flush();
+                fw.close();
+    		}
+            stmt.close();
+            conn.close();
+            System.out.println("Finished adding new column to table Comments");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public List<ClusterPhoto> clusterPhoto(String topTerm) {
+    	Statement stmt;
+    	List<ClusterPhoto> res = new ArrayList<ClusterPhoto>();
+        try {
+            stmt = conn.createStatement();
+            String sql = "Select P.PhotoID, P.URL, P.Date, P.Des, U.Nickname from Photoes P, Users U where LOWER(Des) Like '%"+topTerm+"%'"
+            		+ " and U.UserID=P.UserID ORDER BY RAND() LIMIT 4";
+            System.out.println(sql);
+            ResultSet rs = stmt.executeQuery(sql);
+    		while(rs.next()){
+    			int photoId = rs.getInt("PhotoID");
+    			String url = rs.getString("URL");
+    			String date = rs.getString("Date");
+    			String username = rs.getString("Nickname");
+    			String description = rs.getString("Des");
+    			res.add(new ClusterPhoto(photoId, url, date, username, description));
+    		}
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+    
+    public void closeConn() throws SQLException {
+    	conn.close();
     }
 }

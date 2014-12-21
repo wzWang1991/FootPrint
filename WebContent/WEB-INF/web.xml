@@ -139,4 +139,14 @@
     <servlet-name>UserRegister</servlet-name>
     <url-pattern>/UserRegister</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ClusterGetter</display-name>
+    <servlet-name>ClusterGetter</servlet-name>
+    <servlet-class>ClusterGetter</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ClusterGetter</servlet-name>
+    <url-pattern>/ClusterGetter</url-pattern>
+  </servlet-mapping>
 </web-app>
