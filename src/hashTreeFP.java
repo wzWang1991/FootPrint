@@ -58,8 +58,22 @@ public class hashTreeFP{
 		for(String s: close){
 			System.out.println(s);
 		}
-
+		
+//		ht.addHashColumn();
 		ht.close();
+    }
+    
+    public void addHashColumn(){
+    	String sql = "ALTER TABLE Photoes ADD hash VARCHAR(255)";
+    	Statement stmt;
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     
     public String getHash(int id){
@@ -179,7 +193,8 @@ public class hashTreeFP{
             	if(id == target) continue;
             	
                 String value = rs.getString("hash");
- 
+                if(value==null) continue;
+                
                 int diff = getDiff(target, id, targetHash, value);
                 SimilarPhoto sp = new SimilarPhoto(id, diff);
                 queue.add(sp);
