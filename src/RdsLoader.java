@@ -830,7 +830,6 @@ public class RdsLoader {
     		stmt = conn.createStatement();
     		String sql = "select U.Nickname, DATE_FORMAT(P.Date, '%Y-%m-%d %h:%i:%s') as Date, P.Des, P.URL, Places.Name as placename from Photoes P, Users U, Places, InPlace where P.PhotoID="+photoId+
     				" and P.UserID=U.UserID and Places.PlaceId = InPlace.PlaceId and InPlace.PhotoId=" + photoId;
-    		System.out.println(sql);
     		ResultSet rs = stmt.executeQuery(sql);
     		while(rs.next()){
     			res[0] = rs.getString("URL");
@@ -930,5 +929,53 @@ public class RdsLoader {
     
     public void closeConn() throws SQLException {
     	conn.close();
+    }
+    
+    public List<Place> searchPlaces(List<Integer> photoId) {
+    	Statement stmt;
+    	List<Place> res = new ArrayList<Place>();
+    	try {
+            stmt = conn.createStatement();
+            String sql = "Select Distinct (P.PlaceId), P.Name from InPlace I, Places P where"
+            		+ " (P.PlaceId=I.PlaceId) and (I.PhotoId="+photoId.get(0);
+            for (int i = 1; i < photoId.size(); i++) {
+            	sql += " or I.photoId=" + photoId.get(i);
+            }
+            sql +=")";
+            System.out.println(sql);
+            ResultSet rs = stmt.executeQuery(sql);
+    		while(rs.next()){
+    			res.add(new Place(rs.getInt("PlaceId"), rs.getString("Name")));
+    		}
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//    	System.out.println(res);
+    	return res;
+    }
+    
+    public List<ClusterPhoto> clusterPhoto(int placeId) {
+    	Statement stmt;
+    	List<ClusterPhoto> res = new ArrayList<ClusterPhoto>();
+        try {
+            stmt = conn.createStatement();
+            String sql = "Select P.PhotoID, P.URL, P.Date, P.Des, U.Nickname from Photoes P, Users U, InPlace I "
+            		+ "where U.UserID=P.UserID and P.PhotoId=I.PhotoId and I.PlaceId="+placeId+" ORDER BY RAND() LIMIT 4";
+            System.out.println(sql);
+            ResultSet rs = stmt.executeQuery(sql);
+    		while(rs.next()){
+    			int photoId = rs.getInt("PhotoID");
+    			String url = rs.getString("URL");
+    			String date = rs.getString("Date");
+    			String username = rs.getString("Nickname");
+    			String description = rs.getString("Des");
+    			res.add(new ClusterPhoto(photoId, url, date, username, description));
+    		}
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 }

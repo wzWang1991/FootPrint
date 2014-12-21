@@ -149,4 +149,14 @@
     <servlet-name>ClusterGetter</servlet-name>
     <url-pattern>/ClusterGetter</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>PlaceRecommendationGetter</display-name>
+    <servlet-name>PlaceRecommendationGetter</servlet-name>
+    <servlet-class>PlaceRecommendationGetter</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PlaceRecommendationGetter</servlet-name>
+    <url-pattern>/PlaceRecommendationGetter</url-pattern>
+  </servlet-mapping>
 </web-app>

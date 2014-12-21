@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -35,5 +36,25 @@ public class Recommender {
         		res.add(new SimilarPhoto(photoId, photoInfo[0], recommendValue, photoInfo[1], photoInfo[2], photoInfo[3], photoInfo[4]));
         }
 		return res;
+	}
+	
+	public static List<Cluster> placeCluster(List<SimilarPhoto> similarPhoto) throws SQLException {
+		List<Cluster> clusters = new ArrayList<Cluster>();
+		if (similarPhoto == null || similarPhoto.size() == 0)
+			return clusters;
+		RdsLoader instance = RdsLoader.getInstance();
+		instance.init();
+		List<Integer> photoId = new ArrayList<Integer>();
+		for (int i = 0; i < similarPhoto.size(); i++) {
+			photoId.add(similarPhoto.get(i).photoId);
+		}
+		List<Place> places = instance.searchPlaces(photoId);
+		for (int i = 0; i < places.size(); i++) {
+			String placeName = places.get(i).placeName;
+			int placeId = places.get(i).placeId;
+			clusters.add(new Cluster(placeName, instance.clusterPhoto(placeId)));
+		}
+		instance.closeConn();
+		return clusters;
 	}
 }
