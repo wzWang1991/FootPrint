@@ -692,7 +692,6 @@ public class RdsLoader {
     			return rs.getInt("Rank");
     		}
             stmt.close();
-            System.out.println("Finished inserting into table");
         } catch (SQLException e) {
             e.printStackTrace();
         }
