@@ -15,6 +15,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -55,123 +56,110 @@ public class RdsLoader {
     	RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
 		instance.createDescriptionFile();
-//		instance.addNewColumnToComments();
-//		instance.selectAll("Users");
-//		instance.insert("Users");
-//		instance.deleteTable("Comments");
-//		instance.deleteTable("Photoes");
-//		instance.createPhotoTable();
-//		instance.selectAllPhotoes();
-//		instance.insertPhotoTable(2, "2014-9-10 12:12:12", "really good", 12.12, 23.23, "https://s3.amazonaws.com/footprint.linhuang/cen.jpeg");
-//		instance.selectAllPhotoes();
-//		List<PhotoInfo> res = instance.filterPhotoByTimeAndLocation("winter", 40, 42, -74, -72);
-//		System.out.println(res.size());
-//		for (int i = 0; i <res.size(); i++) {
-//			System.out.println(res.get(i).title);
-//			System.out.println(res.get(i).date);
-//			System.out.println(res.get(i).content);
-//			System.out.println(res.get(i).images.get(0));
-//		}
-//		instance.insertPhotoTable(2, "2014-12-10 12:10:10", "it is too cold, but I love it!!! Fantastic!!", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter.jpg");
-//		instance.insertPhotoTable(1, "2014-11-10 23:08:31", "Bright Buildings !!!!!!!!!!! I will never leave NYC!!!!", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter1.jpg");
-//		instance.insertPhotoTable(2, "2014-11-13 04:02:21", "Hey, Hey, my girlfriend is pretty, right?~~", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter2.jpg");
-//		instance.insertPhotoTable(1, "2014-12-20 08:05:48", "A long way...", 0, 3, "https://s3.amazonaws.com/footprint.linhuang/winter3.jpg");
-//		instance.deleteTable("Comments");
-//		instance.createCommentsTable();
-//		instance.insertCommentsTable(2, 5, "Pretty Cool!!", "2014-11-11 03:04:49");
-//		instance.insertCommentsTable(2, 5, "I live besides the central park, how lucky I am!", "2014-11-11 09:05:28");
-//		instance.insertCommentsTable(1, 5, "I should spend time go there!", "2014-11-11 18:05:48");
-//		instance.insertCommentsTable(2, 6, "haha so pretty!", "2014-11-13 04:02:48");
-//		instance.insertCommentsTable(1, 6, "I admire you!", "2014-11-13 08:05:48.0");
-//		instance.insertCommentsTable(1, 6, "sooooooooooo beautiful! that is miracle", "2014-11-13 15:05:48.0");
-//		instance.insertCommentsTable(1, 7, "Sooooo long!", "2014-11-11 03:04:49");
-//		instance.insertCommentsTable(2, 7, "I wish to play with snow", "2014-12-25 10:24:31");
-//		instance.insertCommentsTable(1, 7, "good picture", "2014-12-25 19:12:32");
-//		instance.insertCommentsTable(2, 8, "I have been there once!", "2014-12-12 09:04:24");
-//		instance.insertCommentsTable(1, 8, "how lovely this bridge is!", "2014-12-13 10:31:16");
-//		instance.insertCommentsTable(2, 8, "Fantanstic!!!!!!!!!!!!!!!!", "2014-12-14 21:52:01");
-//		instance.selectAllComments();
-//		instance.addNewColumnToComments();
-//		Photo P = instance.selectOnePhoto(6,3);
-//		System.out.println(P.content);
-//		for (int i = 0; i < P.similarPhotos.size(); i++) {
-//			System.out.println(P.similarPhotos.get(i).photoId);
-//		}
-//		for (int i = 0; i < P.comments.size(); i++) {
-//			Comment C = P.comments.get(i);
-//			System.out.println(C.title);
-//			System.out.println(C.content);
-//		}
-//		System.out.println(P.avgRank);
-//		System.out.println(P.rating);
-//		instance.createRatingTable();
-//		instance.insertRatingsTable(1, 6, 5);
-//		instance.insertRatingsTable(2, 7, 5);
-//		instance.selectAllRatings();
-//		System.out.println(instance.selectOneRating(1, 6));
-//		instance.insertRatingsTable(1, 6, 3);
-//		System.out.println(instance.selectOneRating(3, 6));
-//		instance.insertPhotoTable(2, "2013-6-10 02:08:20", "This stone memorial sits at the Park's Fifth Avenue perimeter wall. It features an engraved profile of the renowned American newspaper editor for which it was named and an adjacent curved granite bench.", 40.791814, -73.953171, "https://s3-us-west-1.amazonaws.com/centralpark/arthur-brisbane-l.jpg");
-//		instance.insertPhotoTable(3, "2014-2-18 17:23:41", "One of the Park's most picturesque landscapes, the reservoir is 40 feet deep and holds a billion gallons of water. ", 40.784962, -73.963374, "https://s3-us-west-1.amazonaws.com/centralpark/reservoir-l.jpg");
-//		instance.insertPhotoTable(4, "2014-1-4 16:23:01", "Seneca Village may possibly have been Manhattan's first stable community of African American property owners.", 40.782781, -73.970122, "https://s3-us-west-1.amazonaws.com/centralpark/seneca-village-l.jpg");
-//		instance.insertPhotoTable(8, "2014-4-27 14:31:09", "The Pond is one of Central Parks seven naturalistic water bodies. When Frederick Law Olmsted and Calvert Vaux designed Central Park, they imagined an immediate reprieve from the City's streets. ", 40.766109, -73.973985, "https://s3-us-west-1.amazonaws.com/centralpark/pond-l.jpg");
-//		instance.insertPhotoTable(9, "2014-5-31 18:32:12", "Although today the Park's largest lawn without ballfields features people it was originally the home to a flock of pure bred sheep from 1864 until 1934.", 40.772638, -73.975305, "https://s3-us-west-1.amazonaws.com/centralpark/sheep-meadow-l.jpg");
-//		instance.insertPhotoTable(10, "2009-8-7 08:04:24", "This area is popular with families and children because of the famous climbing sculptures, the story-telling programs, the model boats, the cafe, and the site in the children's classic Stuart Little. ", 40.774279, -73.967344, "https://s3-us-west-1.amazonaws.com/centralpark/conservatory-water-l.jpg");
-//		instance.insertRatingsTable(1, 8, 4);
-//		instance.insertRatingsTable(1, 9, 5);
-//		instance.insertRatingsTable(1, 11, 4);
-//		instance.insertRatingsTable(1, 12, 3);
-//		instance.insertRatingsTable(1, 14, 5);
-//		instance.insertRatingsTable(2, 8, 5);
-//		instance.insertRatingsTable(2, 10, 5);
-//		instance.insertRatingsTable(2, 11, 5);
-//		instance.insertRatingsTable(2, 12, 3);
-//		instance.insertRatingsTable(2, 15, 4);
-//		instance.insertRatingsTable(3, 6, 2);
-//		instance.insertRatingsTable(3, 7, 3);
-//		instance.insertRatingsTable(3, 8, 4);
-//		instance.insertRatingsTable(3, 10, 5);
-//		instance.insertRatingsTable(3, 11, 3);
-//		instance.insertRatingsTable(4, 12, 5);
-//		instance.insertRatingsTable(4, 13, 5);
-//		instance.insertRatingsTable(4, 14, 5);
-//		instance.insertRatingsTable(4, 16, 5);
-//		instance.insertRatingsTable(4, 18, 2);
-//		instance.insertRatingsTable(5, 7, 3);
-//		instance.insertRatingsTable(5, 9, 3);
-//		instance.insertRatingsTable(5, 11, 3);
-//		instance.insertRatingsTable(5, 13, 3);
-//		instance.insertRatingsTable(5, 14, 4);
-//		instance.insertRatingsTable(5, 15, 4);
-//		instance.insertRatingsTable(5, 16, 4);
-//		instance.insertRatingsTable(5, 17, 5);
-//		instance.insertRatingsTable(6, 10, 3);
-//		instance.insertRatingsTable(6, 11, 5);
-//		instance.insertRatingsTable(6, 13, 3);
-//		instance.insertRatingsTable(6, 14, 4);
-//		instance.insertRatingsTable(7, 6, 5);
-//		instance.insertRatingsTable(7, 7, 5);
-//		instance.insertRatingsTable(7, 8, 5);
-//		instance.insertRatingsTable(8, 7, 2);
-//		instance.insertRatingsTable(8, 9, 2);
-//		instance.insertRatingsTable(8, 11, 5);
-//		instance.insertRatingsTable(8, 13, 4);
-//		instance.insertRatingsTable(8, 14, 3);
-//		instance.insertRatingsTable(8, 15, 2);
-//		instance.insertRatingsTable(9, 13, 4);
-//		instance.insertRatingsTable(9, 14, 5);
-//		instance.insertRatingsTable(9, 15, 3);
-//		instance.insertRatingsTable(9, 16, 2);
-//		instance.insertRatingsTable(10, 12, 5);
-//		instance.insertRatingsTable(10, 13, 3);
-//		instance.insertRatingsTable(10, 14, 4);
-//		instance.insertRatingsTable(10, 17, 2);
-//		instance.insertRatingsTable(10, 18, 1);
-//		instance.insertRatingsTable(10, 19, 5);
-//		instance.insertRatingsTable(11, 19, 5);
-//		instance.insertRatingsTable(11, 20, 5);
-//		instance.generateCsvForRatings();
-//		Recommender.recomender(1);
+		instance.updatePhotoPlace();
+		
+    }
+    
+    public void alterTable() {
+    	String sql = "DROP TABLE InPlace";
+    	Statement stmt;
+    	try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+           
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+        	System.err.println("Reconnect to database.");
+            e.printStackTrace();
+        }
+    }
+    
+    public void deleteDuplicatePhoto() {
+    	String sql = "SELECT orig.PhotoID, dupl.PhotoID from Photoes as orig, Photoes as dupl where orig.URL = dupl.URL and orig.PhotoID < dupl.PhotoID";
+    	Statement stmt;
+    	HashSet<Integer> duplicateIds = new HashSet<>();
+    	try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                int origId = rs.getInt("orig.PhotoID");
+            	int duplId = rs.getInt("dupl.PhotoID");
+            	duplicateIds.add(duplId);
+                System.out.println("origId:"+origId+"  duplId:"+duplId);
+            }
+            for (int i : duplicateIds) {
+            	sql = "DELETE from Photoes where PhotoID = " + i;
+            	stmt.executeUpdate(sql);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+        	System.err.println("Reconnect to database.");
+            e.printStackTrace();
+        }
+    }
+    
+    public void updatePhotoPlace() {
+    	double[][] latitudes = new double[6][2];
+    	double[][] longitude = new double[6][2];
+    	latitudes[0][0] = 40.7645841;
+    	latitudes[0][1] = 40.8005207;
+    	latitudes[1][0] = 44.1324467;
+    	latitudes[1][1] = 45.1089567;
+    	latitudes[2][0] = 35.7502786;
+    	latitudes[2][1] = 36.8654286;
+    	latitudes[3][0] = 43.066956;
+    	latitudes[3][1] = 43.132055;
+    	latitudes[4][0] = 42.22788;
+    	latitudes[4][1] = 42.3988669;
+    	latitudes[5][0] = 36.1296229;
+    	latitudes[5][1] = 36.380623;
+    	
+    	longitude[0][0] = -73.9815758;
+    	longitude[0][1] = -73.9493995;
+    	longitude[1][0] = -111.1559858;
+    	longitude[1][1] = -109.8241801;
+    	longitude[2][0] = -113.9798954;
+    	longitude[2][1] = -111.5870658;
+    	longitude[3][0] = -79.075321;
+    	longitude[3][1] = -78.9421621;
+    	longitude[4][0] = 71.191113;
+    	longitude[4][1] = 70.9232011;
+    	longitude[5][0] = -115.414625;
+    	longitude[5][1] = -115.062072;
+    	
+    	String sql = "SELECT PhotoID, Lat, Lon from Photoes";
+    	Statement stmt;
+    	try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                int photoId = rs.getInt("PhotoID");
+            	double lat = rs.getDouble("Lat");
+            	double lng = rs.getDouble("Lon");
+                System.out.println("photoId:"+photoId+"  lat:"+lat + "  lng:"+lng);
+                for (int i = 0; i < 6; i++) {
+                	if (lat >= latitudes[i][0] && lat <= latitudes[i][1] && lng >= longitude[i][0] && lng <= longitude[i][1]) {
+                		System.out.println(i + 1);
+                		Statement insertStmt = conn.createStatement();
+                		int placeId = i + 1;
+                		String insertSql = "INSERT INTO InPlace (PhotoId, PlaceId) " + 
+                				"VALUES ("+photoId+", "+placeId+")";
+                		System.out.println(insertSql);
+                		insertStmt.executeUpdate(insertSql);
+                		insertStmt.close();
+                	}
+                }
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+        	System.err.println("Reconnect to database.");
+            e.printStackTrace();
+        }
     }
     
     public void init() {
@@ -369,6 +357,67 @@ public class RdsLoader {
         }
     }
     
+    public void createPlaceRelationTable() {
+    	Statement stmt;
+        try {
+            stmt = conn.createStatement();
+            String sql = "CREATE TABLE InPlace "+
+                    "(RelationId Integer NOT NULL AUTO_INCREMENT, " +
+            		" PhotoId Integer NOT NULL, " + 
+                    " PlaceId Integer NOT NULL, " + 
+                    " PRIMARY KEY ( RelationId )," +
+                    "FOREIGN KEY ( PhotoId ) REFERENCES Photoes(PhotoID), " +
+                    "FOREIGN KEY ( PlaceId ) REFERENCES Places(PlaceId)) ";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            conn.close();
+            System.out.println("Finished creating table InPlace");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void createPlaceTable() {
+    	Statement stmt;
+        try {
+            stmt = conn.createStatement();
+            String sql = "CREATE TABLE Places "+
+                    "(PlaceId Integer NOT NULL AUTO_INCREMENT, " +
+            		" Name VARCHAR(255) NOT NULL, " + 
+                    " ne_lat Double, " + 
+                    " ne_lng Double, " + 
+                    " sw_lat Double, " + 
+                    " sw_lng Double, " + 
+                    " location_lat Double, " + 
+                    " location_lng Double, " + 
+                    " PRIMARY KEY ( PlaceId ))";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            conn.close();
+            System.out.println("Finished creating table Places");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void insertPlace(String name, double ne_lat, double ne_lng, double sw_lat, double sw_lng, double location_lat, double location_lng) {
+    	this.init();
+    	Statement stmt;
+    	try {
+    		stmt = conn.createStatement();
+    		String sql = "INSERT INTO Places (Name, ne_lat, ne_lng, sw_lat, sw_lng, location_lat, location_lng) " + 
+    				"VALUES ('"+name+"', "+ne_lat+", "+ne_lng+", "+sw_lat+", "+sw_lng+", "+location_lat+", "+location_lng+")";
+    		System.out.println(sql);
+    		stmt.executeUpdate(sql);
+
+            stmt.close();
+            conn.close();
+            System.out.println("Finished inserting into table Place");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } 
+    }
+    
     public void selectAllPhotoes() {
     	String sql = "SELECT * FROM Photoes";
     	Statement stmt;
@@ -471,18 +520,26 @@ public class RdsLoader {
         }
     }
     
-    public void insertCommentsTable (int userID, int photoID, String comments, String date) {
+    public int insertCommentsTable (int userID, int photoID, String comments, String date) {
     	Statement stmt;
     	try {
     		stmt = conn.createStatement();
     		String sql = "INSERT INTO Comments (UserID, PhotoID, Comments, Date) " + 
     				"VALUES ("+userID+", "+photoID+", '"+comments+"', '"+date+"')";
     		stmt.executeUpdate(sql);
+    		sql = "SELECT LAST_INSERT_ID()";
+    		ResultSet rs = stmt.executeQuery(sql);
+    		int id = 0;
+    		while (rs.next()) {
+    			id = rs.getInt(1);
+    		}
             stmt.close();
             conn.close();
             System.out.println("Finished inserting into table");
+            return id;
         } catch (SQLException e) {
             e.printStackTrace();
+            return -1;
         } 
     }
     
@@ -686,22 +743,36 @@ public class RdsLoader {
     }
     
     public String[] selectOnePhoto(int photoId) {
+    	
     	Statement stmt;
-    	String[] res = new String[4];
+    	String[] res = new String[5];
     	try {
     		stmt = conn.createStatement();
-    		String sql = "select U.Nickname, DATE_FORMAT(P.Date, '%Y-%m-%d %h:%i:%s') as Date, P.Des, P.URL from Photoes P, Users U where PhotoID="+photoId+
-    				" and P.UserID=U.UserID";
+    		String sql = "select U.Nickname, DATE_FORMAT(P.Date, '%Y-%m-%d %h:%i:%s') as Date, P.Des, P.URL, Places.Name as placename from Photoes P, Users U, Places, InPlace where P.PhotoID="+photoId+
+    				" and P.UserID=U.UserID and Places.PlaceId = InPlace.PlaceId and InPlace.PhotoId=" + photoId;
+    		System.out.println(sql);
     		ResultSet rs = stmt.executeQuery(sql);
     		while(rs.next()){
     			res[0] = rs.getString("URL");
     			res[1] = rs.getString("Date");
     			res[2] = rs.getString("Nickname");
     			res[3] = rs.getString("Des");
-    			return res;
+    			res[4] = rs.getString("placename");
+//    			String searchPlaceSql = "select Places.Name as placename from InPlace, Places where Places.PlaceId = InPlace.PlaceId and InPlace.PhotoId=" + photoId;
+//    			Statement stmtSearch;
+//    			stmtSearch = conn.createStatement();
+//    			ResultSet placeRs = stmtSearch.executeQuery(searchPlaceSql);
+//    			while (placeRs.next()) {
+//    				res[4] = placeRs.getString("placename");
+//    			}
+//    			placeRs.close();
+//    			stmtSearch.close();
+    			rs.close();
+                stmt.close();
+                conn.close();
+                return res;
     		}
-            stmt.close();
-            conn.close();
+    		
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -27,7 +27,7 @@ public class UserRegister extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
-		String password = request.getParameter("passwrod");
+		String password = request.getParameter("password");
 		String nickname = request.getParameter("nickname");
 		RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
@@ -42,7 +42,7 @@ public class UserRegister extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
-		String password = request.getParameter("passwrod");
+		String password = request.getParameter("password");
 		String nickname = request.getParameter("nickname");
 		RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
