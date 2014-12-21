@@ -41,11 +41,9 @@ def main():
 				cnx = MySQLdb.connect(user='xiaojing', passwd = password, host = 'tweetmap.crsarl5br9bw.us-east-1.rds.amazonaws.com', db='tweet')
 				cursor = cnx.cursor()
 				
-				add_hash = ("INSERT IGNORE INTO testPhoto"
-					"(id, hash) "
-					"VALUES (%s, %s)")
+				add_hash = ("UPDATE testPhoto SET hash = %s WHERE id = %s")
 
-				data_hash = (photoid, hash_value)
+				data_hash = (hash_value, photoid)
 
 				cursor.execute(add_hash, data_hash)
 				cnx.commit()
