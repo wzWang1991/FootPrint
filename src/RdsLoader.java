@@ -855,12 +855,13 @@ public class RdsLoader {
     	List<Place> res = new ArrayList<Place>();
     	try {
             stmt = conn.createStatement();
-            String sql = "Select Distinct(P.PlaceId), P.Name from InPlace I, Places P where"
-            		+ " I.PhotoId="+photoId.get(0);
+            String sql = "Select Distinct (P.PlaceId), P.Name from InPlace I, Places P where"
+            		+ " (P.PlaceId=I.PlaceId) and (I.PhotoId="+photoId.get(0);
             for (int i = 1; i < photoId.size(); i++) {
             	sql += " or I.photoId=" + photoId.get(i);
             }
-//            System.out.println(sql);
+            sql +=")";
+            System.out.println(sql);
             ResultSet rs = stmt.executeQuery(sql);
     		while(rs.next()){
     			res.add(new Place(rs.getInt("PlaceId"), rs.getString("Name")));
@@ -869,6 +870,7 @@ public class RdsLoader {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+//    	System.out.println(res);
     	return res;
     }
     

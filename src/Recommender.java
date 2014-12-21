@@ -39,6 +39,9 @@ public class Recommender {
 	}
 	
 	public static List<Cluster> placeCluster(List<SimilarPhoto> similarPhoto) throws SQLException {
+		List<Cluster> clusters = new ArrayList<Cluster>();
+		if (similarPhoto == null || similarPhoto.size() == 0)
+			return clusters;
 		RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
 		List<Integer> photoId = new ArrayList<Integer>();
@@ -46,7 +49,6 @@ public class Recommender {
 			photoId.add(similarPhoto.get(i).photoId);
 		}
 		List<Place> places = instance.searchPlaces(photoId);
-		List<Cluster> clusters = new ArrayList<Cluster>();
 		for (int i = 0; i < places.size(); i++) {
 			String placeName = places.get(i).placeName;
 			int placeId = places.get(i).placeId;
