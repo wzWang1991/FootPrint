@@ -57,7 +57,7 @@ public class RdsLoader {
     public static void main(String[] args) throws IOException, TasteException {
     	RdsLoader instance = RdsLoader.getInstance();
 		instance.init();
-		instance.selectAll("Users");
+		instance.updatePhotoPlace();
 		
     }
     
@@ -129,8 +129,8 @@ public class RdsLoader {
     }
     
     public void updatePhotoPlace() {
-    	double[][] latitudes = new double[6][2];
-    	double[][] longitude = new double[6][2];
+    	double[][] latitudes = new double[7][2];
+    	double[][] longitude = new double[7][2];
     	latitudes[0][0] = 40.7645841;
     	latitudes[0][1] = 40.8005207;
     	latitudes[1][0] = 44.1324467;
@@ -143,6 +143,8 @@ public class RdsLoader {
     	latitudes[4][1] = 42.3988669;
     	latitudes[5][0] = 36.1296229;
     	latitudes[5][1] = 36.380623;
+    	latitudes[6][0] = 40.80348290000001;
+    	latitudes[6][1] = 40.8124448;
     	
     	longitude[0][0] = -73.9815758;
     	longitude[0][1] = -73.9493995;
@@ -156,6 +158,8 @@ public class RdsLoader {
     	longitude[4][1] = 70.9232011;
     	longitude[5][0] = -115.414625;
     	longitude[5][1] = -115.062072;
+    	longitude[6][0] = -73.9689102;
+    	longitude[6][1] = -73.95711899999999;
     	
     	String sql = "SELECT PhotoID, Lat, Lon from Photoes";
     	Statement stmt;
@@ -167,7 +171,7 @@ public class RdsLoader {
             	double lat = rs.getDouble("Lat");
             	double lng = rs.getDouble("Lon");
                 System.out.println("photoId:"+photoId+"  lat:"+lat + "  lng:"+lng);
-                for (int i = 0; i < 6; i++) {
+                for (int i = 0; i < 7; i++) {
                 	if (lat >= latitudes[i][0] && lat <= latitudes[i][1] && lng >= longitude[i][0] && lng <= longitude[i][1]) {
                 		System.out.println(i + 1);
                 		Statement insertStmt = conn.createStatement();
@@ -472,8 +476,40 @@ public class RdsLoader {
         }
     }
     
+    public void setPhotoDate(int id, String date) {
+    	String sql = "UPDATE Photoes SET Date='" + date + "' where PhotoID="+id;
+    	Statement stmt;
+    	
+    	try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            stmt.close();
+            conn.close();
+    	} catch (Exception e) {
+	    	System.err.println("Reconnect to database.");
+	        e.printStackTrace();
+    	}
+    }
+    
+    public void setPhotoPosition(int id, double lat, double lng) {
+    	String sql = "UPDATE Photoes SET `Lon`=" + lng +" where PhotoID="+7;
+    	System.out.println(sql);
+    	
+    	Statement stmt;
+    	
+    	try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            stmt.close();
+            conn.close();
+    	} catch (Exception e) {
+	    	System.err.println("Reconnect to database.");
+	        e.printStackTrace();
+    	}
+    }
+    
     public void pushPhotoToQueue() {
-    	String sql = "SELECT * FROM Photoes";
+    	String sql = "SELECT * FROM Photoes where hash is null";
     	Statement stmt;
     	
     	try {
@@ -488,7 +524,7 @@ public class RdsLoader {
                 double lon = rs.getDouble("Lon");
                 String url = rs.getString("url");
                 String hash = rs.getString("hash");
-                
+                System.out.println(photoId + " " +hash + " " + url);
                 String message = "{\"photoId\": " + photoId + ", \"url\": \""+ url +"\"}";
                 System.out.println(message);
                 PropertiesCredentials propertiesCredentials = new PropertiesCredentials(Thread.currentThread().getContextClassLoader().getResourceAsStream("AwsCredentials.properties"));
@@ -655,7 +691,7 @@ public class RdsLoader {
         }
     	 
     	List<Comment> comments = new ArrayList<Comment>();
-    	sql = "select C.Date, C.Comments, U.Nickname from Users U, Comments C"+
+    	sql = "select DATE_FORMAT(C.Date, '%Y-%m-%d %h:%i:%s'), C.Comments, U.Nickname from Users U, Comments C"+
     			" where C.PhotoID="+photoID+" and U.UserID=C.UserID";
     	try {
             stmt = conn.createStatement();
