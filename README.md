@@ -12,7 +12,7 @@ It provides a mobile app that allows user to footprint themselves on some site, 
 Based on the rating and comments data, the system provides recommendation of photos and places user may be interested.
 
 ##Demo video
-[http://youtu.be/TeZxqr9rVas](http://youtu.be/TeZxqr9rVas)
+[http://youtu.be/PvohQ3nqRSw](http://youtu.be/PvohQ3nqRSw)
 
 ##Slides
 Updating
