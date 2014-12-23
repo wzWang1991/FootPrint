@@ -15,11 +15,14 @@ Based on the rating and comments data, the system provides recommendation of pho
 [http://youtu.be/PvohQ3nqRSw](http://youtu.be/PvohQ3nqRSw)
 
 ##Slides
-Updating
-
+Submitted on courseworks.
 
 ##Documentation
-Updating
+Submitted on courseworks.
 
 ##Report
-Updating
+Submitted on courseworks.
+
+##Other codes:
+Frontend: [https://github.com/wzWang1991/FootPrint-Frontend-Django](https://github.com/wzWang1991/FootPrint-Frontend-Django)
+Android client: [https://github.com/wzWang1991/FootPrint-Android](https://github.com/wzWang1991/FootPrint-Android)
